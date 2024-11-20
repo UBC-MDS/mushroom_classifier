@@ -1,0 +1,8 @@
+name: mushroom_classifier_env
+channels:
+  - conda-forge
+dependencies:
+  - matplotlib
+  - pandas
+  - scikit-learn
+  - ucimlrepo
