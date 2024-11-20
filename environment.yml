@@ -8,3 +8,4 @@ dependencies:
   - ucimlrepo
   - ipykernel
   - numpy
+  - scipy
