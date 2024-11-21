@@ -2,10 +2,10 @@ name: mushroom_classifier_env
 channels:
   - conda-forge
 dependencies:
-  - matplotlib
-  - pandas
-  - scikit-learn
-  - ucimlrepo
-  - ipykernel
-  - numpy
-  - scipy
+  - matplotlib=3.9.2
+  - pandas=2.2.3
+  - scikit-learn=1.5.2
+  - ucimlrepo=0.0.7
+  - ipykernel=6.29.5
+  - numpy=2.1.3
+  - scipy=1.14.1
