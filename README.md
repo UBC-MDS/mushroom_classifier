@@ -14,7 +14,7 @@ The dataset used in this project is the Secondary Mushroom Dataset created by Wa
 
 ## Report
 
-The final report can be found [here]().
+The final report can be found [here](https://github.com/UBC-MDS/mushroom_classifier/blob/main/notebooks/Load_Data_and_EDA.ipynb).
 
 ## Usage
 
@@ -40,13 +40,13 @@ Next, under the "Kernel" menu click "Restart Kernel and Run All Cells...".
 -   `conda-lock`
 -   `jupyterlab`
 -   `nb_conda_kernels`
--   Python and packages listed in [`environment.yml`](environment.yml)
+-   Python and packages listed in [`environment.yml`](https://github.com/UBC-MDS/mushroom_classifier/blob/main/environment.yml)
 
 ## License
 
 The mushroom_classifier is licensed under:
 
--   **Codebase**: MIT License. See [LICENSE.md](LICENSE.md).
+-   **Codebase**: MIT License. See [LICENSE.md](https://github.com/UBC-MDS/mushroom_classifier/blob/main/LICENSE).
 
 -   **Reports and Visualizations**: Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND 4.0).
 
