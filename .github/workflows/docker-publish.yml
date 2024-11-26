@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
   push: 
     branches:
-      - 'main'
-      - 'create-dockerfile'
+      - main
+      - create-dockerfile
     paths: 
       - 'Dockerfile'
       - 'conda-linux-64.lock'
