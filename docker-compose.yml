@@ -1,7 +1,7 @@
 services:
   # run jupyter notebook inside jupyter 
   jupyter-notebook:
-    image:  bfrizzell/mushroom_classifier:latest
+    image:  bfrizzell/mushroom_classifier:f6f2c7b
     ports:
       - "8888:8888"
     volumes:
