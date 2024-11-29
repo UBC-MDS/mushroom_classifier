@@ -9,3 +9,4 @@ dependencies:
   - scipy=1.14.1
   - python=3.11
   - pandera=0.21.0
+  - deepchecks=0.3.2
