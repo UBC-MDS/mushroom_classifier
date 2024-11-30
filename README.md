@@ -27,7 +27,7 @@ The final report can be found [here](https://github.com/UBC-MDS/mushroom_classif
 ### Before you start
 
 -  Clone the repository to your local machine from GitHub.
--  Launch Docker Desktop and ensure it is running in the background (for Windows and MacOS users).
+-  Launch Docker Desktop and ensure it is running in the background (for Windows and macOS users).
 
 ### To replicate the analysis
 
@@ -45,9 +45,9 @@ docker compose up
 
 4.  To run the analysis, open `notebooks/Load_Data_and_EDA.ipynb` in Jupyter Lab you just launched and under the "Kernel" menu click "Restart Kernel and Run All Cells...".
 
-###  To cxit and clean up the Environment
+###  To exit and clean up the Environment
 
-1.  Press `Ctrl` + `C`, then type `docker compose rm` in the terminal where you launched the container to shut down and clean up the resources..
+1.  Press `Ctrl` + `C`, then type `docker compose rm` in the terminal where you launched the container to shut down and clean up the resources.
 
 ## Developer notes
 
