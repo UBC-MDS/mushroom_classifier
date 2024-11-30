@@ -41,7 +41,7 @@ docker compose up
 
 3.  In the terminal, look for a URL that starts with <http://127.0.0.1:8888/lab?token=...> (for an example, see the highlighted text in the terminal below). Copy and paste that URL into your browser. (Make sure no other JupyterLab environment is running at the same time)
 
-![](img/docker-jupyterlab-url.png.png)
+![](img/docker-jupyterlab-url.png)
 
 4.  To run the analysis, open `notebooks/Load_Data_and_EDA.ipynb` in Jupyter Lab you just launched and under the "Kernel" menu click "Restart Kernel and Run All Cells...".
 
