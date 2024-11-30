@@ -6,8 +6,6 @@ This project is part of a data analysis demonstration for DSCI 522 (Data Science
 
 ## About
 
-Here's the corrected version of the text with typos fixed:
-
 In this project, a Support Vector Classifier was built and tuned to identify mushroom edibility. A mushroom is classified as edible or poisonous based on attributes such as color, habitat, class, and others. The final classifier performed quite well on unseen test data, achieving a final overall accuracy of 0.99 and an F2 (beta = 2) score of 0.99. Furthermore, we used a confusion matrix to evaluate the accuracy of classifying mushrooms as poisonous or edible. The model made 12,174 correct predictions out of 12,214 test observations. However, there were 17 false negatives (predicting a poisonous mushroom as edible) and 23 false positives (predicting an edible mushroom as poisonous). The model’s performance shows promise for practical implementation, prioritizing safety by minimizing false negatives that could result in consuming poisonous mushrooms. While false positives may lead to unnecessarily discarding safe mushrooms, they pose no safety risk. Further development is needed to improve the model’s utility, focusing on enhancing performance and analyzing cases of incorrect predictions.
 
 The dataset used in this project is the Secondary Mushroom Dataset created by Wagner, D., Heider, D., and Hattab, G., from the UCI Machine Learning Repository. This dataset contains 61,069 hypothetical mushrooms with caps based on 173 species (353 mushrooms per species). Each mushroom is identified as definitely edible, definitely poisonous, or of unknown edibility and not recommended (the latter class was combined with the poisonous class).
@@ -24,30 +22,32 @@ The final report can be found [here](https://github.com/UBC-MDS/mushroom_classif
 
 ## Usage
 
-### Setup
+> Note: this project is fully reproducible using our Docker container
 
-> If you are using Windows or Mac, make sure Docker Desktop is running.
+### Before you start
 
-1.  Clone this GitHub repository to your local machine.
+-  Clone the repository to your local machine from GitHub.
+-  Launch Docker Desktop and ensure it is running in the background (for Windows and macOS users).
 
-### Running the analysis
+### To replicate the analysis
 
-1.  Navigate to the root of this project in your terminal.
-2.  Launch the JupyterLab environment using the following command
+1.  Navigate to the root directory of this project in your terminal.
+2.  Launch the JupyterLab environment using the following command:
 
 ``` bash
 docker compose up
 ```
 
-3.  In the terminal, look for a URL that starts with <http://127.0.0.1:8888/lab?token=...> (for an example, see the highlighted text in the terminal below). Copy and paste that URL into your browser. (Make sure no other JupyterLab environment is running at the same time)
+3.  In the terminal output, find a URL that starts with <http://127.0.0.1:8888/lab?token=...> (see the highlighted text in the terminal below for an example). Copy and paste this URL into your browser. 
+**Ensure no other JupyterLab environment is running at the same time.**
 
 ![](img/docker-jupyterlab-url.png)
 
 4.  To run the analysis, open `notebooks/Load_Data_and_EDA.ipynb` in Jupyter Lab you just launched and under the "Kernel" menu click "Restart Kernel and Run All Cells...".
 
-### Clean up
+###  To exit and clean up the Environment
 
-1.  Press `Ctrl` + `C` then type `docker compose rm` in the terminal where you launched the container to shut down and clean up the resources.
+1.  Press `Ctrl` + `C`, then type `docker compose rm` in the terminal where you launched the container to shut down and clean up the resources.
 
 ## Developer notes
 
