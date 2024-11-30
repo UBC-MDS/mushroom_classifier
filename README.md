@@ -16,31 +16,59 @@ The dataset used in this project is the Secondary Mushroom Dataset created by Wa
 
 The final report can be found [here](https://github.com/UBC-MDS/mushroom_classifier/blob/main/notebooks/Load_Data_and_EDA.ipynb).
 
-## Usage
-
-First time running the project, run the following command from the root of this repository:
-
-``` bash
-conda-lock install --name mushroom_classifier conda-lock.yml
-```
-
-To run the analysis, run the following command from the root of this repository:
-
-``` bash
-jupyter lab
-```
-
-Open `notebooks/Load_Data_and_EDA.ipynb` in Jupyter Lab and under Switch/Select Kernel choose "Python [conda env:environment]".
-
-Next, under the "Kernel" menu click "Restart Kernel and Run All Cells...".
-
 ## Dependencies
 
--   `conda`
--   `conda-lock`
--   `jupyterlab`
--   `nb_conda_kernels`
--   Python and packages listed in [`environment.yml`](https://github.com/UBC-MDS/mushroom_classifier/blob/main/environment.yml)
+-   [Docker](https://www.docker.com/)
+-   [VS Code](https://code.visualstudio.com/download)
+-   [VS Code Jupyter Extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)
+
+## Usage
+
+### Setup
+
+> If you are using Windows or Mac, make sure Docker Desktop is running.
+
+1.  Clone this GitHub repository to your local machine.
+
+### Running the analysis
+
+1.  Navigate to the root of this project in your terminal.
+2.  Launch the JupyterLab environment using the following command
+
+``` bash
+docker compose up
+```
+
+3.  In the terminal, look for a URL that starts with <http://127.0.0.1:8888/lab?token=...> (for an example, see the highlighted text in the terminal below). Copy and paste that URL into your browser. (Make sure no other JupyterLab environment is running at the same time)
+
+![](img/docker-jupyterlab-url.png)
+
+4.  To run the analysis, open `notebooks/Load_Data_and_EDA.ipynb` in Jupyter Lab you just launched and under the "Kernel" menu click "Restart Kernel and Run All Cells...".
+
+### Clean up
+
+1.  Press `Ctrl` + `C` then type `docker compose rm` in the terminal where you launched the container to shut down and clean up the resources.
+
+## Developer notes
+
+### Developer dependencies
+
+-   `conda` (version 24.11.0 or higher)
+-   `conda-lock` (version 2.5.7 or higher)
+
+### Adding a new dependency
+
+1.  Add the required dependency to the `environment.yml` file in a new branch.
+2.  Use the following command to regenerate the `conda-linux-64.lock` file:
+
+``` bash
+conda-lock -k explicit --file environment.yml -p linux-64
+```
+
+3.  Locally rebuild the Docker image to confirm that it builds and functions as expected.
+4.  Push your updates to GitHub. This will trigger an automated build and push of the new Docker image to Docker Hub, tagged with the SHA of the commit containing the changes.
+5.  Update the `docker-compose.yml` file in your branch to reference the new container image, ensuring the tag is correctly updated.
+6.  Open a pull request to merge your changes into the `main` branch.
 
 ## License
 
