@@ -51,7 +51,7 @@ jobs:
       - name: Update docker-compose.yml with new image tag
         if: success()
         run: |
-          sed -i "s|image:  ttimbers/dsci522-dockerfile-practice-tt:.*|image:  ttimbers/dsci522-dockerfile-practice-tt:${{ steps.meta.outputs.version }}|" docker-compose.yml
+          sed -i "s|image:  bfrizzell/mushroom_classifier:.*|image:  bfrizzell/mushroom_classifier:${{ steps.meta.outputs.version }}|" docker-compose.yml
 
       - name: Commit and push updated docker-compose.yml
         if: success()
