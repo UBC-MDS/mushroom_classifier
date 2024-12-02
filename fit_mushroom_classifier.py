@@ -1,0 +1,112 @@
+# fit_mushroom_classifier.py
+# author: Yichi Zhang
+# date: 2024-12-07
+
+import click
+import os
+import pickle
+import json
+import logging
+from ucimlrepo import fetch_ucirepo 
+import pandas as pd
+import numpy as np
+import pandera as pa
+from pandera import Check
+from deepchecks import Dataset
+import matplotlib.pyplot as plt
+from scipy.stats import loguniform, randint
+from sklearn import set_config
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import QuantileTransformer,OneHotEncoder
+from sklearn.compose import make_column_transformer
+from sklearn.pipeline import make_pipeline
+from sklearn.metrics import ConfusionMatrixDisplay, make_scorer, fbeta_score, accuracy_score, precision_score, recall_score
+from sklearn.model_selection import cross_validate, cross_val_predict, GridSearchCV, RandomizedSearchCV
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning, module="deepchecks")
+
+
+@click.command()
+@click.option('--training-data', type=str, help="Path to training data")
+@click.option('--preprocessor', type=str, help="Path to preprocessor object")
+@click.option('--columns-to-drop', type=str, help="Optional: columns to drop")
+@click.option('--pipeline-to', type=str, help="Path to directory where the pipeline object will be written to")
+@click.option('--plot-to', type=str, help="Path to directory where the plot will be written to")
+@click.option('--seed', type=int, help="Random seed", default=123)
+def main(training_data, preprocessor, columns_to_drop, pipeline_to, plot_to, seed):
+    '''Fits a breast cancer classifier to the training data 
+    and saves the pipeline object.'''
+    np.random.seed(seed)
+    set_config(transform_output="pandas")
+
+    # read in data & preprocessor
+    mushroom_train = pd.read_csv(training_data)
+    mushroom_preprocessor = pickle.load(open(preprocessor, "rb"))
+
+    if columns_to_drop:
+        to_drop = pd.read_csv(columns_to_drop).feats_to_drop.tolist()
+        mushroom_train = mushroom_train.drop(columns=to_drop)
+
+    # create metrics
+    scoring_metrics = {
+    'accuracy':make_scorer(accuracy_score),
+    'f2_score':make_scorer(fbeta_score, beta=2, pos_label='p',average='binary') 
+    }
+    cv_results = dict()
+
+    # tune model and save results
+    # knn model
+    knn = make_pipeline(mushroom_preprocessor, KNeighborsClassifier())
+    knn_grid = {'kneighborsclassifier__n_neighbors':randint(5,1000)}
+    cv_results['knn'] = RandomizedSearchCV(
+        knn, knn_grid, n_iter=5, n_jobs=-1, cv=3,
+        scoring=scoring_metrics, random_state=seed,
+        refit='f2_score'
+    ).fit(mushroom_train.drop(columns=["target"]),
+          mushroom_train["target"])
+    
+    # logistic regression model
+    logreg = make_pipeline(preprocessor,LogisticRegression(max_iter=5000,random_state=seed))
+    logreg_grid = {'logisticregression__C':loguniform(1e-3,1e3)}
+    cv_results['logreg'] = RandomizedSearchCV(
+        logreg,logreg_grid,n_iter=30,n_jobs=-1,
+        scoring=scoring_metrics,random_state=seed,
+        refit='f2_score'
+    ).fit(mushroom_train.drop(columns=["target"]),
+          mushroom_train["target"])
+    
+    # svc model
+    svc = make_pipeline(preprocessor,SVC(random_state=seed))
+    svc_grid = {'svc__C':loguniform(1e-3,1e3),
+            'svc__gamma':loguniform(1e-3,1e3)}
+    cv_results['svc'] = RandomizedSearchCV(
+        svc,svc_grid,n_iter=3,n_jobs=-1,cv=3,
+        scoring=scoring_metrics,random_state=seed,
+        refit='f2_score'
+    ).fit(mushroom_train.drop(columns=["target"]),
+          mushroom_train["target"])
+    
+    # compilng hyperparameters and scores of best models into one dataframe
+    cols = ['params','mean_fit_time','mean_test_accuracy','std_test_accuracy','mean_test_f2_score','std_test_f2_score']
+    final_results = pd.concat(
+        [pd.DataFrame(result.cv_results_).query('rank_test_f2_score == 1')[cols] for _,result in cv_results.items()]
+    )
+    final_results.index = ['KNN','Logisic Regression','SVC']
+
+    with open("table.pkl", "wb") as f:
+        pickle.dump(final_results, f)
+    
+    # save the best model
+    best_model = cv_results['svc'].best_estimator_
+    best_model.fit(mushroom_train.drop(columns=["target"]), mushroom_train["target"])
+
+    with open(os.path.join(pipeline_to, "mushroom_pipeline.pickle"), 'wb') as f:
+        pickle.dump(best_model, f)
+
+
+if __name__ == '__main__':
+    main()
