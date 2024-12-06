@@ -62,7 +62,7 @@ def main(processed_training_data, plot_to):
         table.set_fontsize(10)
         table.auto_set_column_width(col=list(range(len(freq_percent_df.columns))))
 
-        file_path = os.path.join(plot_to, "figures", f"{column}_frequency_table.png")
+        file_path = os.path.join(plot_to, "tables", f"{column}_frequency_table.png")
         plt.savefig(file_path, dpi=300, bbox_inches='tight')
         print(f"Saved styled table for '{column}'")
 
