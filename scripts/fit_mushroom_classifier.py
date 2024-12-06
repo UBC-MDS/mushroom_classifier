@@ -32,10 +32,9 @@ from sklearn.model_selection import cross_validate, cross_val_predict, GridSearc
 @click.option('--processed-training-data', type=str, help="Path to processed training data")
 @click.option('--preprocessor', type=str, help="Path to preprocessor object")
 @click.option('--pipeline-to', type=str, help="Path to directory where the pipeline object will be written to")
-@click.option('--plot-to', type=str, help="Path to directory where the plot will be written to")
 @click.option('--results-to', type=str, help="Path to directory where the plot will be written to")
 @click.option('--seed', type=int, help="Random seed", default=123)
-def main(processed_training_data, preprocessor, pipeline_to, plot_to, results_to, seed):
+def main(processed_training_data, preprocessor, pipeline_to, results_to, seed):
     '''Fits a breast cancer classifier to the training data 
     and saves the pipeline object.'''
     np.random.seed(seed)
@@ -96,7 +95,7 @@ def main(processed_training_data, preprocessor, pipeline_to, plot_to, results_to
     )
     final_results.index = ['KNN','Logisic Regression','SVC']
     final_results.to_csv(
-        os.path.join(results_to, "tables", "numeric_correlation_matrix.csv")
+        os.path.join(results_to, "tables", "cross_val_results.csv")
         )
     
     # save the best model
@@ -115,7 +114,7 @@ def main(processed_training_data, preprocessor, pipeline_to, plot_to, results_to
         mushroom_train["target"]
         )
     disp.plot()
-    plt.savefig(os.path.join(results_to, "figures", "confusion_matrix.png"), dpi=300)
+    plt.savefig(os.path.join(results_to, "figures", "train_confusion_matrix.png"), dpi=300)
 
 
 if __name__ == '__main__':

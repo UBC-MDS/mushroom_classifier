@@ -28,17 +28,17 @@ from sklearn.metrics import ConfusionMatrixDisplay, make_scorer, fbeta_score, ac
 from sklearn.model_selection import cross_validate, cross_val_predict, GridSearchCV, RandomizedSearchCV
 
 @click.command()
-@click.option('--scaled-test-data', type=str, help="Path to scaled test data")
+@click.option('--cleaned-test-data', type=str, help="Path to cleaned test data")
 @click.option('--pipeline-from', type=str, help="Path to directory where the fit pipeline object lives")
 @click.option('--results-to', type=str, help="Path to directory where the plot will be written to")
 @click.option('--seed', type=int, help="Random seed", default=123)
-def main(scaled_test_data, pipeline_from, results_to, seed):
+def main(cleaned_test_data, pipeline_from, results_to, seed):
     '''Evaluates the breast cancer classifier on the test data 
     and saves the evaluation results.'''
     np.random.seed(seed)
     set_config(transform_output="pandas")
 
-    mushroom_test = pd.read_csv(scaled_test_data)
+    mushroom_test = pd.read_csv(cleaned_test_data)
 
     with open(pipeline_from, 'rb') as f:
         mushroom_fit = pickle.load(f)
@@ -68,14 +68,14 @@ def main(scaled_test_data, pipeline_from, results_to, seed):
         mushroom_preds["target"],
         mushroom_preds["predicted"]
     )
-    confusion_matrix.to_csv(os.path.join(results_to, "tables", "confusion_matrix.csv"))
+    confusion_matrix.to_csv(os.path.join(results_to, "tables", "test_confusion_matrix.csv"))
 
     disp = ConfusionMatrixDisplay.from_predictions(
         mushroom_preds["target"],
         mushroom_preds["predicted"]
     )
     disp.plot()
-    plt.savefig(os.path.join(results_to, "figures", "confusion_matrix.png"), dpi=300)
+    plt.savefig(os.path.join(results_to, "figures", "test_confusion_matrix.png"), dpi=300)
 
 
 if __name__ == '__main__':
