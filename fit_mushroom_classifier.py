@@ -26,30 +26,24 @@ from sklearn.compose import make_column_transformer
 from sklearn.pipeline import make_pipeline
 from sklearn.metrics import ConfusionMatrixDisplay, make_scorer, fbeta_score, accuracy_score, precision_score, recall_score
 from sklearn.model_selection import cross_validate, cross_val_predict, GridSearchCV, RandomizedSearchCV
-import warnings
-warnings.filterwarnings("ignore", category=FutureWarning, module="deepchecks")
 
 
 @click.command()
-@click.option('--training-data', type=str, help="Path to training data")
+@click.option('--processed-training-data', type=str, help="Path to processed training data")
 @click.option('--preprocessor', type=str, help="Path to preprocessor object")
-@click.option('--columns-to-drop', type=str, help="Optional: columns to drop")
 @click.option('--pipeline-to', type=str, help="Path to directory where the pipeline object will be written to")
 @click.option('--plot-to', type=str, help="Path to directory where the plot will be written to")
+@click.option('--results-to', type=str, help="Path to directory where the plot will be written to")
 @click.option('--seed', type=int, help="Random seed", default=123)
-def main(training_data, preprocessor, columns_to_drop, pipeline_to, plot_to, seed):
+def main(processed_training_data, preprocessor, pipeline_to, plot_to, results_to, seed):
     '''Fits a breast cancer classifier to the training data 
     and saves the pipeline object.'''
     np.random.seed(seed)
     set_config(transform_output="pandas")
 
     # read in data & preprocessor
-    mushroom_train = pd.read_csv(training_data)
+    mushroom_train = pd.read_csv(processed_training_data)
     mushroom_preprocessor = pickle.load(open(preprocessor, "rb"))
-
-    if columns_to_drop:
-        to_drop = pd.read_csv(columns_to_drop).feats_to_drop.tolist()
-        mushroom_train = mushroom_train.drop(columns=to_drop)
 
     # create metrics
     scoring_metrics = {
@@ -91,21 +85,37 @@ def main(training_data, preprocessor, columns_to_drop, pipeline_to, plot_to, see
           mushroom_train["target"])
     
     # compilng hyperparameters and scores of best models into one dataframe
-    cols = ['params','mean_fit_time','mean_test_accuracy','std_test_accuracy','mean_test_f2_score','std_test_f2_score']
+    cols = ['params',
+            'mean_fit_time',
+            'mean_test_accuracy',
+            'std_test_accuracy',
+            'mean_test_f2_score',
+            'std_test_f2_score']
     final_results = pd.concat(
         [pd.DataFrame(result.cv_results_).query('rank_test_f2_score == 1')[cols] for _,result in cv_results.items()]
     )
     final_results.index = ['KNN','Logisic Regression','SVC']
-
-    with open("table.pkl", "wb") as f:
-        pickle.dump(final_results, f)
+    final_results.to_csv(
+        os.path.join(results_to, "tables", "numeric_correlation_matrix.csv")
+        )
     
     # save the best model
     best_model = cv_results['svc'].best_estimator_
-    best_model.fit(mushroom_train.drop(columns=["target"]), mushroom_train["target"])
+    best_model.fit(
+        mushroom_train.drop(columns=["target"]), 
+        mushroom_train["target"]
+        )
 
-    with open(os.path.join(pipeline_to, "mushroom_pipeline.pickle"), 'wb') as f:
+    with open(os.path.join(pipeline_to, "mushroom_best_model.pickle"), 'wb') as f:
         pickle.dump(best_model, f)
+
+    disp = ConfusionMatrixDisplay.from_estimator(
+        best_model,
+        mushroom_train.drop(columns=["target"]),
+        mushroom_train["target"]
+        )
+    disp.plot()
+    plt.savefig(os.path.join(results_to, "figures", "confusion_matrix.png"), dpi=300)
 
 
 if __name__ == '__main__':
