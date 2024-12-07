@@ -5,7 +5,7 @@ author:
   - "Hankun Xiao"
   - "Essie Zhang"
   - "Mason Zhang"
-date: "2024-11-23"
+date: "2024-12-07"
 jupyter: python3
 format: 
     html:
@@ -59,7 +59,7 @@ The dataset used in this project is the Secondary Mushroom Dataset @secondary_mu
 
 ### Analysis
 
-The mushroom dataset is balanced with 56% of poisonous mushroom and 44% of edible mushroom. All variables were standardized and variables with more than 15% missing values are dropped, because imputing a variable that has a significant proportion of missing data might introduce too much noise or bias, making it unreliable. Data was splitted with 80% being partitioned into the training set and 20% being partitioned into the test set. Three classification models including Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression are used to predict whether a mushroom is edible or poisonous. The fine tuned Support Vector Classifier has the best overall performance. The hyperparameter was chosen using 5-fold cross validation with $F_{\beta}$ score as the classification metric. $\beta$ was chosen to be set to `{python} BETA` for the $F_{\beta}$ score to increase the weight on recall during fitting because predicting a mushroom to be edible when it is in fact poisonous could have severe health consequences. Therefore the goal is to prioritize the minimization of false negatives. The Python programming language (Van Rossum and Drake 2009) and the following Python packages were used to perform the analysis: Matplotlib @4160265, Pandas @mckinney-proc-scipy-2010, Scikit-learn @scikit-learn, NumPy @harris2020array, SciPy @2020SciPy-NMeth, UCIMLRepo @secondary_mushroom_848.
+The mushroom dataset is balanced with 56% of poisonous mushroom and 44% of edible mushroom. All variables were standardized and variables with more than 15% missing values are dropped, because imputing a variable that has a significant proportion of missing data might introduce too much noise or bias, making it unreliable. Data was splitted with 80% being partitioned into the training set and 20% being partitioned into the test set. Three classification models including Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression are used to predict whether a mushroom is edible or poisonous. The fine tuned Support Vector Classifier has the best overall performance. The hyperparameter was chosen using 5-fold cross validation with $F_{\beta}$ score as the classification metric. $\beta$ was chosen to be set to `{python} BETA` for the $F_{\beta}$ score to increase the weight on recall during fitting because predicting a mushroom to be edible when it is in fact poisonous could have severe health consequences. Therefore the goal is to prioritize the minimization of false negatives. The Python programming language @python3 and the following Python packages were used to perform the analysis: Matplotlib @4160265, Pandas @mckinney-proc-scipy-2010, Scikit-learn @scikit-learn, NumPy @harris2020array, SciPy @2020SciPy-NMeth, UCIMLRepo @secondary_mushroom_848.
 
 ## Exploratory data analysis
 
