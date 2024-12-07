@@ -53,37 +53,41 @@ def main(processed_training_data, preprocessor, pipeline_to, results_to, seed):
 
     # tune model and save results
     # knn model
+    print('Training KNN Model...')
     knn = make_pipeline(mushroom_preprocessor, KNeighborsClassifier())
     knn_grid = {'kneighborsclassifier__n_neighbors':randint(5,1000)}
     cv_results['knn'] = RandomizedSearchCV(
         knn, knn_grid, n_iter=5, n_jobs=-1, cv=3,
         scoring=scoring_metrics, random_state=seed,
         refit='f2_score'
-    ).fit(mushroom_train.drop(columns=["target"]),
-          mushroom_train["target"])
+    ).fit(mushroom_train.drop(columns=["class"]),
+          mushroom_train["class"])
     
     # logistic regression model
-    logreg = make_pipeline(preprocessor,LogisticRegression(max_iter=5000,random_state=seed))
+    print('Training Logistic Regression Model...')
+    logreg = make_pipeline(mushroom_preprocessor,LogisticRegression(max_iter=5000,random_state=seed))
     logreg_grid = {'logisticregression__C':loguniform(1e-3,1e3)}
     cv_results['logreg'] = RandomizedSearchCV(
         logreg,logreg_grid,n_iter=30,n_jobs=-1,
         scoring=scoring_metrics,random_state=seed,
         refit='f2_score'
-    ).fit(mushroom_train.drop(columns=["target"]),
-          mushroom_train["target"])
+    ).fit(mushroom_train.drop(columns=["class"]),
+          mushroom_train["class"])
     
     # svc model
-    svc = make_pipeline(preprocessor,SVC(random_state=seed))
+    print('Training SVC Model...')
+    svc = make_pipeline(mushroom_preprocessor,SVC(random_state=seed))
     svc_grid = {'svc__C':loguniform(1e-3,1e3),
             'svc__gamma':loguniform(1e-3,1e3)}
     cv_results['svc'] = RandomizedSearchCV(
         svc,svc_grid,n_iter=3,n_jobs=-1,cv=3,
         scoring=scoring_metrics,random_state=seed,
         refit='f2_score'
-    ).fit(mushroom_train.drop(columns=["target"]),
-          mushroom_train["target"])
+    ).fit(mushroom_train.drop(columns=["class"]),
+          mushroom_train["class"])
     
     # compilng hyperparameters and scores of best models into one dataframe
+    print('Compiling Results...')
     cols = ['params',
             'mean_fit_time',
             'mean_test_accuracy',
@@ -101,8 +105,8 @@ def main(processed_training_data, preprocessor, pipeline_to, results_to, seed):
     # save the best model
     best_model = cv_results['svc'].best_estimator_
     best_model.fit(
-        mushroom_train.drop(columns=["target"]), 
-        mushroom_train["target"]
+        mushroom_train.drop(columns=["class"]), 
+        mushroom_train["class"]
         )
 
     with open(os.path.join(pipeline_to, "mushroom_best_model.pickle"), 'wb') as f:
@@ -110,12 +114,12 @@ def main(processed_training_data, preprocessor, pipeline_to, results_to, seed):
 
     disp = ConfusionMatrixDisplay.from_estimator(
         best_model,
-        mushroom_train.drop(columns=["target"]),
-        mushroom_train["target"]
+        mushroom_train.drop(columns=["class"]),
+        mushroom_train["class"]
         )
     disp.plot()
     plt.savefig(os.path.join(results_to, "figures", "train_confusion_matrix.png"), dpi=300)
-
+    print("Finished model training")
 
 if __name__ == '__main__':
     main()
