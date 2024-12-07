@@ -43,10 +43,11 @@ def main(cleaned_test_data, pipeline_from, results_to, seed):
     with open(pipeline_from, 'rb') as f:
         mushroom_fit = pickle.load(f)
 
+    print('Evaluating model on test data...')
     # Compute accuracy
     accuracy = mushroom_fit.score(
-        mushroom_test.drop(columns=["target"]),
-        mushroom_test["target"]
+        mushroom_test.drop(columns=["class"]),
+        mushroom_test["class"]
     )
 
     # Compute F2 score (beta = 2)
@@ -54,7 +55,7 @@ def main(cleaned_test_data, pipeline_from, results_to, seed):
         predicted=mushroom_fit.predict(mushroom_test)
     )
     f2_beta_2_score = fbeta_score(
-        mushroom_preds['target'],
+        mushroom_preds['class'],
         mushroom_preds['predicted'],
         beta=2,
         pos_label='p'
@@ -65,18 +66,18 @@ def main(cleaned_test_data, pipeline_from, results_to, seed):
     test_scores.to_csv(os.path.join(results_to, "test_scores.csv"), index=False)
 
     confusion_matrix = pd.crosstab(
-        mushroom_preds["target"],
+        mushroom_preds["class"],
         mushroom_preds["predicted"]
     )
     confusion_matrix.to_csv(os.path.join(results_to, "tables", "test_confusion_matrix.csv"))
 
     disp = ConfusionMatrixDisplay.from_predictions(
-        mushroom_preds["target"],
+        mushroom_preds["class"],
         mushroom_preds["predicted"]
     )
     disp.plot()
     plt.savefig(os.path.join(results_to, "figures", "test_confusion_matrix.png"), dpi=300)
-
+    print('Complete')
 
 if __name__ == '__main__':
     main()
