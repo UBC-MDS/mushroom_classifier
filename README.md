@@ -43,7 +43,42 @@ docker compose up
 
 ![](img/docker-jupyterlab-url.png)
 
-4.  To run the analysis, open `notebooks/Load_Data_and_EDA.ipynb` in Jupyter Lab you just launched and under the "Kernel" menu click "Restart Kernel and Run All Cells...".
+4.  To run the analysis, open a terminal in the Jupyterlab environment and run the following commands:
+
+```bash
+python scripts/download_data.py \
+    --dataset_id=848 \
+    --raw_path=data/raw/raw_mushroom.csv
+
+python scripts/data_cleaning.py \
+    --input_path=data/raw/raw_mushroom.csv \
+    --output_path=data/processed/cleaned_mushroom.csv \
+    --columns_to_drop_path=data/processed/columns_to_drop.csv \
+    --missing_values_path=results/tables/missing_values_by_column.csv
+
+python scripts/split_n_preprocess.py \
+    --input_path=data/processed/cleaned_mushroom.csv \
+    --output_dir=data/processed \
+    --results_dir=results \
+    --seed=123
+
+python scripts/eda.py \
+    --processed-training-data=data/processed/mushroom_train.csv \
+    --plot-to=results
+
+python scripts/fit_mushroom_classifier.py \
+    --processed-training-data=data/processed/mushroom_train.csv \
+    --preprocessor=results/models/mushroom_preprocessor.pickle \
+    --pipeline-to=results/models \
+    --results-to=results \
+    --seed=123
+
+python scripts/evaluate_mushroom_predictor.py \
+    --cleaned-test-data=data/processed/mushroom_test.csv \
+    --pipeline-from=results/models/mushroom_best_model.pickle \
+    --results-to=results \
+    --seed=123
+```
 
 ###  To exit and clean up the Environment
 
