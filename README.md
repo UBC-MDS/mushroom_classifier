@@ -78,6 +78,8 @@ python scripts/evaluate_mushroom_predictor.py \
     --pipeline-from=results/models/mushroom_best_model.pickle \
     --results-to=results \
     --seed=123
+    
+quarto render report/*.qmd --to pdf
 ```
 
 ###  To exit and clean up the Environment
