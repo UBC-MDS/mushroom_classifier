@@ -1,0 +1,169 @@
+---
+title: Mushroom Edibility Classification Using Feature-Based Machine Learning Approach
+author:
+  - "Benjamin Frizzell"
+  - "Hankun Xiao"
+  - "Essie Zhang"
+  - "Mason Zhang"
+date: "2024-12-07"
+jupyter: python3
+format: 
+    html:
+        toc: true
+        toc-depth: 2
+    pdf:
+        toc: true
+        toc-depth: 2
+bibliography: references.bib
+execute:
+  echo: false
+  warning: false
+editor: source
+---
+
+```{python}
+import pandas as pd
+test_confusion_matrix = pd.read_csv("../results/tables/test_confusion_matrix.csv", index_col=0)
+# Extract values from the confusion matrix
+TP = test_confusion_matrix.loc['p', 'p']  # True Positives: Predicted 'p' and Actual 'p'
+FP = test_confusion_matrix.loc['e', 'p']  # False Positives: Predicted 'p' but Actual 'e'
+TN = test_confusion_matrix.loc['e', 'e']  # True Negatives: Predicted 'e' and Actual 'e'
+FN = test_confusion_matrix.loc['p', 'e']  # False Negatives: Predicted 'e' but Actual 'p'
+CORRECT = TP + TN
+TOTAL = TP + FP + TN + FN
+ACCURACY = round(CORRECT/TOTAL, 3)
+PRECISION = TP / (TP + FP)
+RECALL = TP / (TP + FN)
+BETA = 2
+
+def f_beta(precision, recall, beta):
+    f_beta_score = (1 + beta**2) * (precision * recall) / ((beta**2 * precision) + recall)
+    return round(f_beta_score, 3)
+
+F_BETA = f_beta(PRECISION, RECALL, BETA)
+```
+
+## Summary
+
+In this project, a Support Vector Classifier was built and tuned to identify mushrooms edibility. A mushroom is classified as edible or poisonous with given color, habitat, class, and others. The final classifier performed quite well on unseen test data, with a final overall accuracy of `{python} ACCURACY` and $F_{\beta}$ score with $\beta = `{python} BETA`$ of `{python} F_BETA`. Furthermore, we use confusion matrix to show the accuracy of classification poisonous or edible mushroom. The model makes `{python} CORRECT` correct predictions out of `{python} TOTAL` test observations. `{python} FN` mistakes were predicting a poisonous mushroom as edible (false negative), while `{python} FP` mistakes were predicting a edible mushroom as poisonous (false positive). The model’s performance shows promise for implementation, prioritizing safety by minimizing false negatives that could result in consuming poisonous mushrooms. While false positives may lead to unnecessarily discarding safe mushrooms, they pose no safety risk. Further development is needed to make this model useful. Research should focus on improving performance and analyzing cases of incorrect predictions.
+
+## Introduction
+
+Mushrooms are the most common food which is rich in vitamins and minerals. However, not all mushrooms can be consumed directly, most of them are poisonous and identifying edible or poisonous mushroom through the naked eye is quite difficult. Our aim is to using machine learning to identify mushrooms edibility. In this project, three methods are used to detect the edibility of mushrooms: Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression.
+
+## Methods
+
+### Data
+
+The dataset used in this project is the Secondary Mushroom Dataset @secondary_mushroom_848. This dataset contains 61069 hypothetical mushrooms with caps based on 173 species (353 mushrooms per species). Each mushroom is identified as definitely edible, definitely poisonous, or of unknown edibility and not recommended (the latter class was combined with the poisonous class).
+
+### Analysis
+
+The mushroom dataset is balanced with 56% of poisonous mushroom and 44% of edible mushroom. All variables were standardized and variables with more than 15% missing values are dropped, because imputing a variable that has a significant proportion of missing data might introduce too much noise or bias, making it unreliable. Data was splitted with 80% being partitioned into the training set and 20% being partitioned into the test set. Three classification models including Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression are used to predict whether a mushroom is edible or poisonous. The fine tuned Support Vector Classifier has the best overall performance. The hyperparameter was chosen using 5-fold cross validation with $F_{\beta}$ score as the classification metric. $\beta$ was chosen to be set to `{python} BETA` for the $F_{\beta}$ score to increase the weight on recall during fitting because predicting a mushroom to be edible when it is in fact poisonous could have severe health consequences. Therefore the goal is to prioritize the minimization of false negatives. The Python programming language @python3 and the following Python packages were used to perform the analysis: Matplotlib @4160265, Pandas @mckinney-proc-scipy-2010, Scikit-learn @scikit-learn, NumPy @harris2020array, SciPy @2020SciPy-NMeth, UCIMLRepo @secondary_mushroom_848.
+
+## Exploratory data analysis
+
+### Part 1: Numeric Features
+![The Distribution of Feature Cap Diameter](../results/figures/histogram_cap-diameter.png){#fig-cap-diameter width=50%}
+
+![The Distribution of Feature Stem Height](../results/figures/histogram_stem-height.png){#fig-stem-height width=50%}
+
+![The Distribution of Feature Stem Width](../results/figures/histogram_stem-width.png){#fig-stem-width width=50%}
+
+The EDA shows that all numeric columns in the mushroom dataset are nearly normal with some skewness. A robust preprocessing scheme `QuantileTransformer` is used because it can transform skewed data or heavy-tailed distributions into a more Gaussian-like shape and reduce the impact of outliers. `OneHotEncoder` is applied for categorical features in the mushroom dataset, because each feature does not contains much categories and they are not ordered. It is critical to keep all important information in the features. Since ring type feature has many missing values, it was filled in with a "Missing" class. Treating missing values as a distinct category provides a way to model the absence of data directly. This can be valuable because missingness itself might carry information.
+
+### Part 2: Categorical Features
+![The Distribution of Feature Cap Shape](../results/tables/cap-shape_frequency_table.png){#fig-cap-shape}
+
+![The Distribution of Feature Cap Color](../results/tables/cap-color_frequency_table.png){#fig-cap-color}
+
+![The Distribution of Feature Bruise or Bleed](../results/tables/does-bruise-or-bleed_frequency_table.png){#fig-does-bruise-or-bleed}
+
+![The Distribution of Feature Gill Color](../results/tables/gill-color_frequency_table.png){#fig-gill-color}
+
+![The Distribution of Feature Stem Color](../results/tables/stem-color_frequency_table.png){#fig-stem-color}
+
+![The Distribution of Feature Stem Color](../results/tables/has-ring_frequency_table.png){#fig-has-ring}
+
+![The Distribution of Feature Stem Color](../results/tables/ring-type_frequency_table.png){#fig-ring-type}
+
+![The Distribution of Feature Stem Color](../results/tables/habitat_frequency_table.png){#fig-habitat}
+
+![The Distribution of Feature Stem Color](../results/tables/season_frequency_table.png){#fig-season}
+
+Based on the Frequency and Percentage distributions, here are our findings:
+
+1.  @fig-cap-shape: The most common cap shape is `x` (convex), comprising 43.97% of the data. Other shapes like `f` (flat) and `s` (sunken) are also prevalent, while `c` (conical) is the least common with 2.95% appearance.
+
+2.  @fig-cap-color: The most frequently appeared color is `n` (brown), with 39.71% of the data. Other colors like `y` (yellow), `w` (white), and `g` (gray) are also well-represented, while rare colors like `b` (buff) and `l` (blue) appear in less than 2% of the data.
+
+3.  @fig-does-bruise-or-bleed: The majority of the mushrooms are `f` (do not bruise or bleed), while their counterpart makes up 17.26% of the data.
+
+4.  @fig-gill-color: The most common gill color is `w` (white), with 30.45% of the data. Other colors such as `n` (brown) and `y` (yellow) are also frequent, while rare gill colors like `e` (red), `b` (buff), and `u` (purple) appear in less than 2% of the data.
+
+5.  @fig-stem-color: `w` (white) and `n` (brown) are the dominating stem colors, accounting for 37.75% and 29.5% of the data, respectively. Other colors like `r` (green), `l` (blue), and `b` (buff) are less frequent, appearing in less than 1% of the observations.
+
+6.  @fig-has-ring: Most mushrooms are `f` (do not have a ring), with 74.84% observations. The remaining 25.16% mushrooms are `t` (have a ring).
+
+7.  @fig-ring-type: `f` (none) is the most common ring type, accounting for 82.3% of the data. Other types like `e` (evanescent) and `z` (zone) are less frequent, while rare types like `m` (movable) occur in less than 1% of the data.
+
+8.  @fig-habitat: The predominant habitat is `d` (woods), with 72.46% appearance. Other habitats such as `g` (grasses) and `l` (leaves) are less common, while `w` (waste), `p` (paths), and `u` (urban) only make up less than 1% of the data individually.
+
+9.   @fig-season: Most mushrooms grow in `a` (autumn), comprising 49.36% of the data, followed by `u` (summer) at 37.5%. The other two seasons `w` (winter) and `s` (spring) are less frequent.
+
+Categorical features will be encoded into binary format in the following preprocessing phase with `OneHotEncoder`. Since we are dealing with a mix of binary and non-binary categorical features, for features like `does-bruise-or-bleed` and `has-ring` that have two unique values, they will be handled with `drop='if_binary'` argument to reduce redundancy while still capturing the information.
+
+### Part 4: The distribution of the target
+
+![The Distribution of Feature Stem Color](../results/figures/target_variable_distribution.png){#fig-target}
+
+The target variable `class` represents whether a mushroom is `p` (poisonous) or `e` (edible). Understanding the distribution of the target helps assessing class balance, which might have impact on models' performance.
+
+Based on the Frequency and Percentage distribution @fig-target, here are our findings:
+
+1.  `p` (Poisonous): There are 27,143 instances of poisonous mushrooms, accounting for 55.56% of the data.
+
+2.  `e` (Edible): There are 21,712 instances of edible mushrooms, constituting 44.44% of the data.
+
+Using $F_{\beta}$, precision, recall, or confusion matrix to evaluate the model's performance is advisable in the following procedure.
+
+
+
+## Prediction Model
+
+
+### Preprocessing and Model Building
+```{python}
+import pandas as pd
+cv_result = pd.read_csv("../results/tables/cross_val_results.csv")
+cv_result.rename(columns={'Unnamed: 0': 'Model'}, inplace=True)
+cv_result = cv_result[['Model', 'mean_test_accuracy', 'mean_test_f2_score']]
+
+cv_knn_accuracy = round(cv_result.loc[0, 'mean_test_accuracy'], 3)
+cv_knn_f2_score = round(cv_result.loc[0, 'mean_test_f2_score'], 3)
+
+cv_logreg_accuracy = round(cv_result.loc[1, 'mean_test_accuracy'], 3)
+cv_logreg_f2_score = round(cv_result.loc[1, 'mean_test_f2_score'], 3)
+
+cv_svc_accuracy = round(cv_result.loc[2, 'mean_test_accuracy'], 3)
+cv_svc_f2_score = round(cv_result.loc[2, 'mean_test_f2_score'], 3)
+
+```
+
+Three classification models including Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression are used to predict whether a mushroom is edible or poisonous. Predicting a mushroom to be edible when it is in fact poisonous could have severe health consequences. Therefore the best model should prioritize the minimization of this error. To do this, we can evaluate models on an $F_{\beta}$ score with $\beta = `{python} BETA`$.
+
+After tuning the hyperparameter, the Logistic Regression model has the mean accuracy of `{python} cv_logreg_accuracy` and mean $F_{\beta}$ score of `{python} cv_logreg_f2_score` on the validation set. The KNN model has the mean accuracy of `{python} cv_knn_accuracy` and mean $F_{\beta}$ score of `{python} cv_knn_f2_score`. The SVC outperforms both Logistic Regression and KNN significantly in both accuracy of `{python} cv_svc_accuracy` and $F_{\beta}$ score of `{python} cv_svc_f2_score`. Thus, SVC is the ideal choice to identify edible or poisonous mushroom (recall is the highest priority).
+
+```{python}
+print(cv_result)
+```
+
+### Model Evaluation
+
+![The Distribution of Feature Stem Color](../results/figures/test_confusion_matrix.png){#fig-test_confusion_matrix}
+
+The prediction model performed quite well on test data, with a final overall accuracy of `{python} ACCURACY` and $F_{\beta}$ score of `{python} F_BETA` @fig-test_confusion_matrix. The model only makes `{python} FN + FP` mistakes out of `{python} TOTAL` test samples. `{python} FN` mistakes were predicting a poisonous mushroom as edible (false negative), while `{python} FP` mistakes were predicting a edible mushroom as poisonous (false positive). The model’s performance is promising for implementation, as false negatives represent potential safety risks and these errors could lead to consuming poisonous mushrooms, it is minimized to protect users. On the other hand, false positives are less harmful, they may lead to discarding safe mushrooms unnecessarily but do not endanger safety.
+
+While the overall performance of the SVC model are impressive, efforts could focus on further reducing false negatives to enhance the safety of predictions. It might be important to take a closer look at the `{python} FN + FP` misclassified observations to identify specific features contributing to these misclassifications. Implementing feature engineering on those features such as encoding rare categories differently can enhance the model’s power and reduce the misclassification cases. Additionally, trying other classifiers like Decision Tree and Random Forest which are less sensitive to scaling or irrelevant features might improve the prediction.
+
+## References
