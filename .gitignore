@@ -1,6 +1,12 @@
 # ignore ALL .log files
 *.log
 
+# Mac OS files
+**.DS_Store
+
+# Jupyter Notebook
+**.ipynb_checkpoints
+
 # ignore caches
 .jupyter/
 .cache/
