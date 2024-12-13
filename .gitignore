@@ -12,3 +12,6 @@
 .cache/
 .ipython/
 .local/
+
+# bash history
+.bash_history
