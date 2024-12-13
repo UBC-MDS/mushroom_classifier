@@ -12,6 +12,7 @@ on:
       - main
       - create-dockerfile
       - update-environment
+      - add-pytest-to-env
     paths: 
       - 'Dockerfile'
       - 'conda-linux-64.lock'
