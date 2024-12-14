@@ -84,7 +84,7 @@ def plot_confusion_matrix(test_data, output_dir):
 @click.option('--results-to', type=str, help="Path to directory where the plot will be written to")
 @click.option('--seed', type=int, help="Random seed", default=123)
 def main(cleaned_test_data, pipeline_from, results_to, seed):
-    """Main function to evaluate the breast cancer classifier."""
+    """Main function to evaluate the mushroom classifier."""
     np.random.seed(seed)
     set_config(transform_output="pandas")
 
