@@ -4,10 +4,14 @@ import pandas as pd
 def summarize_categorical_features(data, output_dir):
     """
     Summarize categorical features in the dataset and save tables as CSV.
-    
-    Parameters:
-        data (pd.DataFrame): The processed training data containing features and class labels.
-        output_dir (str): Directory to save the summary tables.
+
+    Parameters
+    ----------
+    data : pandas.DataFrame
+        The processed training data containing features and class labels.
+    output_dir : str
+        Directory to save the summary tables.
+        
     """
     # Ensure the output directory exists
     os.makedirs(output_dir, exist_ok=True)
