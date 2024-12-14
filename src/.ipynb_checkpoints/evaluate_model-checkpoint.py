@@ -30,6 +30,10 @@ def evaluate_model(model, test_data):
 
     """
     print('Evaluating model on test data...')
+
+    if test_data.empty:
+        return 0.0, 0.0, test_data
+    
     # Compute accuracy
     accuracy = model.score(test_data.drop(columns=["class"]), test_data["class"])
 

@@ -27,4 +27,14 @@ def load_data(input_path):
     """
     if not os.path.exists(input_path):
         raise FileNotFoundError(f"The file {input_path} does not exist.")
-    return pd.read_csv(input_path)
+        
+    try:
+        data = pd.read_csv(input_path)
+    except pd.errors.EmptyDataError:
+        raise ValueError(f"The file {input_path} is empty.")
+    except pd.errors.ParserError:
+        raise ValueError(f"The file {input_path} is not a valid CSV.")
+    if data.empty or len(data.columns) == 0:
+        raise ValueError(f"The file {input_path} does not contain valid data.")
+    
+    return data

@@ -13,6 +13,9 @@ def summarize_categorical_features(data, output_dir):
         Directory to save the summary tables.
         
     """
+    if not isinstance(data, pd.DataFrame):
+        raise TypeError("Input must be a pandas DataFrame.")
+    
     # Ensure the output directory exists
     os.makedirs(output_dir, exist_ok=True)
     
