@@ -1,3 +1,5 @@
+""" Unit testing for the evaluate_model.py script """
+
 import pytest
 import pandas as pd
 from sklearn.dummy import DummyClassifier

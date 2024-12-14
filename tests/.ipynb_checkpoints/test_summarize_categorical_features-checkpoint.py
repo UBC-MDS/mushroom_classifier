@@ -1,3 +1,5 @@
+""" Unit testing for the summarize_categorical_features.py script """
+
 import pytest
 import sys
 import os
