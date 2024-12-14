@@ -1,6 +1,7 @@
 """ Unit testing for the load_data.py script """
 
 import os
+import sys
 import pytest
 import pandas as pd
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -15,7 +16,7 @@ def sample_csv(tmp_path):
         "season": ["s", "u", "a", "w", "u", "a"],
         "habitat": ["g", "l", "p", "u", "l", "p"],
         "cap-diameter": [1, 2, 3, 4, 5, 6],
-        "class": ["p", "e", "p", "p", "e"]
+        "class": ["p", "e", "p", "p", "e", "e"]
     })
     file_path = tmp_path / "sample_data.csv"
     data.to_csv(file_path, index=False)
@@ -48,8 +49,9 @@ def test_load_data_empty_file(tmp_path):
     
     empty_file_path = tmp_path / "empty_file.csv"
     pd.DataFrame().to_csv(empty_file_path, index=False)
-    data = load_data(empty_file_path)
-    assert data.empty, "The DataFrame should be empty."
+
+    with pytest.raises(ValueError, match="The file .* is empty."):
+        load_data(empty_file_path)
 
 def test_load_data_invalid_csv(tmp_path):
     """
@@ -60,5 +62,5 @@ def test_load_data_invalid_csv(tmp_path):
     with open(invalid_csv_path, 'w') as f:
         f.write("This is not a valid CSV format.")
     
-    with pytest.raises(pd.errors.ParserError):
+    with pytest.raises(ValueError, match="The file .* does not contain valid data."):
         load_data(invalid_csv_path)

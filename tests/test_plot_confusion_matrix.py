@@ -1,8 +1,10 @@
 """ Unit testing for the plot_confusion_matrix.py script """
 
 import os
+import sys
 import pytest
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.dummy import DummyClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import ConfusionMatrixDisplay
@@ -16,7 +18,7 @@ def sample_data():
         "season": ["s", "u", "a", "w", "u", "a"],
         "habitat": ["g", "l", "p", "u", "l", "p"],
         "cap-diameter": [1, 2, 3, 4, 5, 6],
-        "class": ["p", "e", "p", "p", "e"]
+        "class": ["p", "e", "p", "p", "e", "e"]
     })
     
 @pytest.fixture

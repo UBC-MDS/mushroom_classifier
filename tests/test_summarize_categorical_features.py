@@ -1,8 +1,8 @@
 """ Unit testing for the summarize_categorical_features.py script """
 
-import pytest
-import sys
 import os
+import sys
+import pytest
 import pandas as pd
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from src.summarize_categorical_features import summarize_categorical_features
@@ -43,12 +43,18 @@ def test_output_directory_creation(sample_data, temp_directory):
     """
     Test that the function creates the output directory if it does not exist.
     """
-    assert not os.path.exists(temp_directory)
-
-    summarize_categorical_features(sample_data, temp_directory)
-
-    # Verify the directory is created
-    assert os.path.exists(temp_directory)
+    # Create a unique path for testing
+    output_dir = temp_directory / "nonexistent_dir"
+    
+    # Ensure the directory does not exist before the test
+    assert not output_dir.exists()
+    
+    # Call the function to create the directory and save results
+    summarize_categorical_features(sample_data, output_dir)
+    
+    # Check that the directory was created
+    assert output_dir.exists()
+    assert output_dir.is_dir()
 
 
 def test_no_categorical_features(temp_directory):
@@ -82,6 +88,6 @@ def test_invalid_dataframe_type(temp_directory):
     invalid_dataframe = {}  # Not a pandas DataFrame
     
     with pytest.raises(TypeError, match="Input must be a pandas DataFrame"):
-        summarize_categorical_features(data, temp_directory)
+        summarize_categorical_features(invalid_dataframe, temp_directory)
 
 

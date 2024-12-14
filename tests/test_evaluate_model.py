@@ -1,5 +1,7 @@
 """ Unit testing for the evaluate_model.py script """
 
+import os
+import sys
 import pytest
 import pandas as pd
 from sklearn.dummy import DummyClassifier
@@ -14,7 +16,7 @@ def sample_data():
         "season": ["s", "u", "a", "w", "u", "a"],
         "habitat": ["g", "l", "p", "u", "l", "p"],
         "cap-diameter": [1, 2, 3, 4, 5, 6],
-        "class": ["p", "e", "p", "p", "e"]
+        "class": ["p", "e", "p", "p", "e", "e"]
     })
     
 @pytest.fixture
