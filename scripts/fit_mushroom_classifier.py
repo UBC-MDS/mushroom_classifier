@@ -6,6 +6,7 @@ and select the best model.
 
 import click
 import os
+import sys
 import pickle
 import json
 import logging
@@ -27,6 +28,9 @@ from sklearn.compose import make_column_transformer
 from sklearn.pipeline import make_pipeline
 from sklearn.metrics import ConfusionMatrixDisplay, make_scorer, fbeta_score, accuracy_score, precision_score, recall_score
 from sklearn.model_selection import cross_validate, cross_val_predict, GridSearchCV, RandomizedSearchCV
+
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+from src.plot_confusion_matrix import plot_confusion_matrix
 
 
 def load_data_and_preprocessor(data_path, preprocessor_path):
@@ -80,12 +84,6 @@ def save_model(model, output_dir):
         pickle.dump(model, f)
 
 
-def plot_confusion_matrix(model, data, target, output_dir):
-    """Generate and save a confusion matrix plot."""
-    os.makedirs(os.path.join(output_dir, "figures"), exist_ok=True)
-    disp = ConfusionMatrixDisplay.from_estimator(model, data, target)
-    disp.plot()
-    plt.savefig(os.path.join(output_dir, "figures", "train_confusion_matrix.png"), dpi=300)
 
 
 @click.command()

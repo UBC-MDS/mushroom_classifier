@@ -5,24 +5,15 @@ including numeric feature histograms grouped by target and categorical frequency
 
 import click
 import os
+import sys
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+from src.summarize_categorical_features import summarize_categorical_features
+from src.load_data import load_data
 
-def load_data(input_path):
-    """
-    Load the processed training data from the specified path.
-    
-    Parameters:
-        input_path (str): Path to the processed training data CSV.
-    
-    Returns:
-        pd.DataFrame: Loaded DataFrame.
-    """
-    if not os.path.exists(input_path):
-        raise FileNotFoundError(f"The file {input_path} does not exist.")
-    return pd.read_csv(input_path)
 
 
 def plot_feature_histograms(data, output_dir, bins=30):
@@ -67,26 +58,6 @@ def plot_feature_histograms(data, output_dir, bins=30):
         print(f"Saved plot: {output_path}")
 
 
-def summarize_categorical_features(data, output_dir):
-    """
-    Summarize categorical features in the dataset and save tables as CSV.
-    
-    Parameters:
-        data (pd.DataFrame): The processed training data containing features and class labels.
-        output_dir (str): Directory to save the summary tables.
-    """
-    # Ensure the output directory exists
-    os.makedirs(output_dir, exist_ok=True)
-    
-    categorical_features = [col for col in data.columns if data[col].dtype == "object"]
-    
-    for feature in categorical_features:
-        summary = data[feature].value_counts(normalize=False).to_frame(name="Count")
-        summary["Proportion"] = data[feature].value_counts(normalize=True)
-        
-        output_path = os.path.join(output_dir, f"{feature}_summary.csv")
-        summary.to_csv(output_path)
-        print(f"Saved summary table for '{feature}' at: {output_path}")
 
 
 @click.command()
