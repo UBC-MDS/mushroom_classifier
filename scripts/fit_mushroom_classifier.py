@@ -1,6 +1,8 @@
-# fit_mushroom_classifier.py
-# author: Yichi Zhang
-# date: 2024-12-07
+'''
+Fit several models to the training data, 
+and use cross-validation to tune hyperparameters 
+and select the best model.
+'''
 
 import click
 import os

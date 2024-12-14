@@ -1,6 +1,7 @@
-# eda.py
-# Author: Yichi Zhang
-# Date: 2024-12-07
+'''
+Exploratory data analysis of training data, 
+including numeric feature histograms grouped by target and categorical frequency tables
+'''
 
 import click
 import os

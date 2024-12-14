@@ -1,6 +1,7 @@
-# fit_mushroom_classifier.py
-# author: Yichi Zhang
-# date: 2024-12-07
+'''
+Evaluate the best-performing mushroom classifier on the test data, 
+summarize via a confusion matrix.
+'''
 
 import click
 import os
