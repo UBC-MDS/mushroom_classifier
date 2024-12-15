@@ -93,7 +93,7 @@ def save_model(model, output_dir):
 @click.option('--results-to', type=str, help="Path to directory where the plot will be written to")
 @click.option('--seed', type=int, help="Random seed", default=123)
 def main(processed_training_data, preprocessor, pipeline_to, results_to, seed):
-    """Main function to train and evaluate the breast cancer classifier."""
+    """Main function to train and evaluate the mushroom classifier."""
     np.random.seed(seed)
     set_config(transform_output="pandas")
 
