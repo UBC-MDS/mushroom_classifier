@@ -1,4 +1,4 @@
-# mushroom_classifier
+# Mushroom Edibility Classifier
 
 -   author: Benjamin Frizzell, Hankun Xiao, Yichi Zhang, Mingyang Zhang
 
