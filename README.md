@@ -2,7 +2,9 @@
 
 -   author: Benjamin Frizzell, Hankun Xiao, Yichi Zhang, Mingyang Zhang
 
-This project is part of a data analysis demonstration for DSCI 522 (Data Science Workflows), a course in the Master of Data Science program at the University of British Columbia.
+This project is part of a data analysis demonstration for DSCI 522 (Data Science Workflows), a course in the Master of Data Science program at the University of British Columbia. 
+
+Our aim is to use machine learning to classify mushrooms’ edibility, i.e., whether they are poisonous or edible.
 
 ## About
 

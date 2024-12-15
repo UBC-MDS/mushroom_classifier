@@ -56,7 +56,7 @@ This Code of Conduct applies to all interactions within the project spaces, such
 
 ## Reporting Issues
 
-If you witness or experience inappropriate behavior, please report it to the project team via email at **[[mzhan123\@student.ubc.ca](mzhan123@student.ubc.ca){.email}**]. Reports will be handled confidentially, and all concerns will be reviewed and addressed promptly and fairly.
+If you witness or experience inappropriate behavior, please report it to the project team via email at [mzhan123@student.ubc.ca](mailto:mzhan123@student.ubc.ca). Reports will be handled confidentially, and all concerns will be reviewed and addressed promptly and fairly.
 
 When submitting a report, please include:
 
