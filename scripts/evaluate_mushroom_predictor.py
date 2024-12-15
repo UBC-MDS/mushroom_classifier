@@ -1,18 +1,18 @@
-# fit_mushroom_classifier.py
-# author: Yichi Zhang
-# date: 2024-12-07
+'''
+Evaluate the best-performing mushroom classifier on the test data, 
+summarize via a confusion matrix.
+'''
 
 import click
 import os
+import sys
 import pickle
 import json
 import logging
-from ucimlrepo import fetch_ucirepo 
 import pandas as pd
 import numpy as np
 import pandera as pa
 from pandera import Check
-from deepchecks import Dataset
 import matplotlib.pyplot as plt
 from scipy.stats import loguniform, randint
 from sklearn import set_config
@@ -27,57 +27,59 @@ from sklearn.pipeline import make_pipeline
 from sklearn.metrics import ConfusionMatrixDisplay, make_scorer, fbeta_score, accuracy_score, precision_score, recall_score
 from sklearn.model_selection import cross_validate, cross_val_predict, GridSearchCV, RandomizedSearchCV
 
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+from src.plot_confusion_matrix import plot_confusion_matrix
+from src.evaluate_model import evaluate_model
+from src.load_data import load_data
+
+
+def load_pipeline(pipeline_path):
+    """Load the trained pipeline object."""
+    with open(pipeline_path, 'rb') as f:
+        return pickle.load(f)
+
+
+def save_evaluation_results(accuracy, f2_score, output_dir):
+    """Save evaluation metrics to a CSV file."""
+    results = pd.DataFrame({'accuracy': [accuracy], 'F2 score (beta = 2)': [f2_score]})
+    os.makedirs(output_dir, exist_ok=True)
+    results.to_csv(os.path.join(output_dir, "tables", "test_scores.csv"), index=False)
+
+
+def save_confusion_matrix(test_data, output_dir):
+    """Save the confusion matrix as a CSV file."""
+    confusion_matrix = pd.crosstab(
+        test_data["class"], test_data["predicted"], rownames=["Actual"], colnames=["Predicted"]
+    )
+    os.makedirs(os.path.join(output_dir, "tables"), exist_ok=True)
+    confusion_matrix.to_csv(os.path.join(output_dir, "tables", "test_confusion_matrix.csv"))
+
+
+
 @click.command()
 @click.option('--cleaned-test-data', type=str, help="Path to cleaned test data")
 @click.option('--pipeline-from', type=str, help="Path to directory where the fit pipeline object lives")
 @click.option('--results-to', type=str, help="Path to directory where the plot will be written to")
 @click.option('--seed', type=int, help="Random seed", default=123)
 def main(cleaned_test_data, pipeline_from, results_to, seed):
-    '''Evaluates the breast cancer classifier on the test data 
-    and saves the evaluation results.'''
+    """Main function to evaluate the mushroom classifier."""
     np.random.seed(seed)
     set_config(transform_output="pandas")
 
-    mushroom_test = pd.read_csv(cleaned_test_data)
+    # Load data and pipeline
+    test_data = load_data(cleaned_test_data)
+    trained_pipeline = load_pipeline(pipeline_from)
 
-    with open(pipeline_from, 'rb') as f:
-        mushroom_fit = pickle.load(f)
+    # Evaluate the model
+    accuracy, f2_score, evaluated_data = evaluate_model(trained_pipeline, test_data)
 
-    print('Evaluating model on test data...')
-    # Compute accuracy
-    accuracy = mushroom_fit.score(
-        mushroom_test.drop(columns=["class"]),
-        mushroom_test["class"]
-    )
+    # Save results
+    save_evaluation_results(accuracy, f2_score, results_to)
+    save_confusion_matrix(evaluated_data, results_to)
+    plot_confusion_matrix(evaluated_data, results_to)
 
-    # Compute F2 score (beta = 2)
-    mushroom_preds = mushroom_test.assign(
-        predicted=mushroom_fit.predict(mushroom_test)
-    )
-    f2_beta_2_score = fbeta_score(
-        mushroom_preds['class'],
-        mushroom_preds['predicted'],
-        beta=2,
-        pos_label='p'
-    )
+    print("Evaluation complete.")
 
-    test_scores = pd.DataFrame({'accuracy': [accuracy], 
-                                'F2 score (beta = 2)': [f2_beta_2_score]})
-    test_scores.to_csv(os.path.join(results_to, "test_scores.csv"), index=False)
-
-    confusion_matrix = pd.crosstab(
-        mushroom_preds["class"],
-        mushroom_preds["predicted"]
-    )
-    confusion_matrix.to_csv(os.path.join(results_to, "tables", "test_confusion_matrix.csv"))
-
-    disp = ConfusionMatrixDisplay.from_predictions(
-        mushroom_preds["class"],
-        mushroom_preds["predicted"]
-    )
-    disp.plot()
-    plt.savefig(os.path.join(results_to, "figures", "test_confusion_matrix.png"), dpi=300)
-    print('Complete')
 
 if __name__ == '__main__':
     main()
