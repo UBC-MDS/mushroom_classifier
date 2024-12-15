@@ -7,7 +7,7 @@ USER root
 
 # for Quarto PDF rendering
 RUN sudo apt update \
-    && sudo apt install -y lmodern
+    && sudo apt install -y lmodern make
   
 
 USER $NB_UID
