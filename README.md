@@ -84,11 +84,8 @@ conda-lock -k explicit --file environment.yml -p linux-64
 
 ## License
 
-The mushroom_classifier is licensed under:
-
--   **Codebase**: MIT License. See [LICENSE.md](https://github.com/UBC-MDS/mushroom_classifier/blob/main/LICENSE).
-
--   **Reports and Visualizations**: Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND 4.0).
+The project is licensed under:
+-   **Codebase, Reports and Visualizations**: Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND 4.0). See [LICENSE.md](https://github.com/UBC-MDS/mushroom_classifier/blob/main/LICENSE).
 
 ## References
 
