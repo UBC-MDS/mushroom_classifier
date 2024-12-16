@@ -1,3 +1,6 @@
+"""
+Build preprocessor for data and saved transformed data.
+"""
 import click
 import pandas as pd
 import sys
