@@ -1,3 +1,6 @@
+"""
+Validates data and splits into training and testing sets.
+"""
 import click
 import pandas as pd
 import sys
