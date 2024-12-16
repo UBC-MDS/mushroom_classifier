@@ -1,4 +1,4 @@
-.PHONY: all clean clean-data clean-results clean-models
+.PHONY: all clean-data clean-results clean-models clean-all
 
 
 
