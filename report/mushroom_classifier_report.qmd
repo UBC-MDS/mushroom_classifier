@@ -9,6 +9,7 @@ author:
     affiliation: "UBC Master of Data Science"
   - name: "Mason Zhang"
     affiliation: "UBC Master of Data Science"
+
 date: "2024-12-07"
 jupyter: python3
 format: 
@@ -52,12 +53,19 @@ F_BETA = f_beta(PRECISION, RECALL, BETA)
 ```
 
 ## Summary
+In this project, we developed and evaluated a machine learning model to classify mushroom edibility (i.e., whether they are edible or poisonous) based on features such as color, habitat, and structure. This is an important task as eating poisonous mushrooms can lead to severe health risks, while identifying toxic mushrooms through manual visual inspection can be challenging and time-consuming.
 
-In this project, a Support Vector Classifier was built and tuned to identify mushrooms edibility. A mushroom is classified as edible or poisonous with given color, habitat, class, and others. The final classifier performed quite well on unseen test data, with a final overall accuracy of `{python} ACCURACY` and $F_{\beta}$ score with $\beta = `{python} BETA`$ of `{python} F_BETA`. Furthermore, we use confusion matrix to show the accuracy of classification poisonous or edible mushroom. The model makes `{python} CORRECT` correct predictions out of `{python} TOTAL` test observations. `{python} FN` mistakes were predicting a poisonous mushroom as edible (false negative), while `{python} FP` mistakes were predicting a edible mushroom as poisonous (false positive). The model’s performance shows promise for implementation, prioritizing safety by minimizing false negatives that could result in consuming poisonous mushrooms. While false positives may lead to unnecessarily discarding safe mushrooms, they pose no safety risk. Further development is needed to make this model useful. Research should focus on improving performance and analyzing cases of incorrect predictions.
+We built and fine-tuned a Support Vector Classifier (SVC), using both accuracy and $F_{\beta}$ as performance metrics. The $F_{\beta}$ score is a weighted harmonic mean of precision and recall. We calculated $F_{\beta}$ with $\beta = 2$ to place greater emphasis on recall, as predicting a poisonous mushroom as edible (false negatives) could have severe consequences. Our final model achieved an overall accuracy of `{python} ACCURACY` and $F_{\beta}$ score with $\beta = `{python} BETA`$ of `{python} F_BETA` with `{python} CORRECT` correct predictions out of `{python} TOTAL` test observations. In terms of error, the model  predicted `{python} FN` poisonous mushrooms as edible (false negative) and predicted `{python} FP` edible mushrooms as poisonous (false positive). 
+
+Even though the model shows promising performance, a limitation of this project is the lack of incorporation of biological domain knowledge about mushrooms into the feature engineering process, which could further reduce false negatives. This is an area that could be addressed in future work.
 
 ## Introduction
 
-Mushrooms are the most common food which is rich in vitamins and minerals. However, not all mushrooms can be consumed directly, most of them are poisonous and identifying edible or poisonous mushroom through the naked eye is quite difficult. Our aim is to using machine learning to identify mushrooms edibility. In this project, three methods are used to detect the edibility of mushrooms: Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression.
+Mushrooms are a widely consumed food source known for their rich nutritional content, including essential vitamins and minerals. However, not all mushrooms are safe for consumption, as many species are highly toxic. Eating poisonous mushrooms can lead to severe health consequences, including hospitalization and death, as highlighted in an incident report from @cdc2024.
+
+Distinguishing between edible and poisonous mushrooms is particularly challenging, especially when dealing with large quantities. According to research by @niosh2019, in the commercial distribution of agricultural products, there is a risk of mixing edible and poisonous mushrooms. Traditional identification methods rely on human expertise, which can be time-consuming and inconsistent.
+
+The primary goal of this project is to develop an accurate machine learning model that minimizes false negatives (i.e., misclassifying poisonous mushrooms as edible) while maintaining reasonable overall performance. To achieve this, our project applies machine learning techniques to classify mushroom edibility based on various features, such as color, habitat, and structure. The dataset used in this study contains detailed observations of mushrooms, categorized as either edible or poisonous @secondary_mushroom_848. Our analysis applied three classification algorithms: Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression. These models were chosen for their diverse approaches to classification and their ability to capture complex relationships between features.
 
 ## Methods
 
