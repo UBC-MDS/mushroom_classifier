@@ -1,6 +1,6 @@
-.PHONY: all clean
+.PHONY: all clean clean-data clean-results clean-models
 
-all: report/mushroom_classifier_report.html report/mushroom_classifier_report.pdf
+
 
 # download data
 data/raw/raw_mushroom.csv: scripts/download_data.py
@@ -50,7 +50,7 @@ results/tables/*_summary.csv results/figures/*_histogram.png: scripts/eda.py dat
 
 results/tables/cross_val_results.csv \
 results/models/mushroom_best_model.pickle \
-results/figures/train_confusion_matrix.png: fit_mushroom_classifier.py data/processed/mushroom_train.csv
+results/figures/train_confusion_matrix.png: scripts/fit_mushroom_classifier.py data/processed/mushroom_train.csv
 	python scripts/fit_mushroom_classifier.py \
     	--processed-training-data=data/processed/mushroom_train.csv \
     	--preprocessor=results/models/mushroom_preprocessor.pickle \
@@ -83,13 +83,28 @@ results/tables/test_scores.csv
 	quarto render report/mushroom_classifier_report.qmd --to pdf
 	quarto render report/mushroom_classifier_report.qmd --to html
 
-# clean up analysis
-clean:
+# run entire analysis
+all: report/mushroom_classifier_report.html report/mushroom_classifier_report.pdf
+
+# remove raw and preprocessed data
+clean-data:
 	rm -r data/raw/*
 	rm -r data/processed/*
+
+# remove all tables,figures, etc.
+clean-results:
 	rm -r results/figures/*
 	rm -r results/tables/*
+
+# remove model and preprocessor
+clean-models:
 	rm -r results/models/*
+
+# remove rendered reports
+clean-reports:
 	rm -rf report/mushroom_classifier_report.html \
 			report/mushroom_classifier_report.pdf \
 			report/mushroom_classifier_report_files
+
+clean-all: clean_data clean-results clean-models clean-reports
+	
