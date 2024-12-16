@@ -103,7 +103,7 @@ window.Quarto = {
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a></li>
   <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">Exploratory data analysis</a></li>
-  <li><a href="#prediction-model" id="toc-prediction-model" class="nav-link" data-scroll-target="#prediction-model">Prediction Model</a></li>
+  <li><a href="#result-discussion" id="toc-result-discussion" class="nav-link" data-scroll-target="#result-discussion">Result &amp; Discussion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../mushroom_classifier_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -174,11 +174,15 @@ window.Quarto = {
 
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this project, a Support Vector Classifier was built and tuned to identify mushrooms edibility. A mushroom is classified as edible or poisonous with given color, habitat, class, and others. The final classifier performed quite well on unseen test data, with a final overall accuracy of 0.996 and <span class="math inline">\(F_{\beta}\)</span> score with <span class="math inline">\(\beta = 2\)</span> of 0.997. Furthermore, we use confusion matrix to show the accuracy of classification poisonous or edible mushroom. The model makes 12134 correct predictions out of 12181 test observations. 22 mistakes were predicting a poisonous mushroom as edible (false negative), while 25 mistakes were predicting a edible mushroom as poisonous (false positive). The model’s performance shows promise for implementation, prioritizing safety by minimizing false negatives that could result in consuming poisonous mushrooms. While false positives may lead to unnecessarily discarding safe mushrooms, they pose no safety risk. Further development is needed to make this model useful. Research should focus on improving performance and analyzing cases of incorrect predictions.</p>
+<p>In this project, we developed and evaluated a machine learning model to classify mushroom edibility (i.e., whether they are edible or poisonous) based on features such as color, habitat, and structure. This is an important task as eating poisonous mushrooms can lead to severe health risks, while identifying toxic mushrooms through manual visual inspection can be challenging and time-consuming.</p>
+<p>We built and fine-tuned a Support Vector Classifier (SVC), using both accuracy and <span class="math inline">\(F_{\beta}\)</span> as performance metrics. The <span class="math inline">\(F_{\beta}\)</span> score is a weighted harmonic mean of precision and recall. We calculated <span class="math inline">\(F_{\beta}\)</span> with <span class="math inline">\(\beta = 2\)</span> to place greater emphasis on recall, as predicting a poisonous mushroom as edible (false negatives) could have severe consequences. Our final model achieved an overall accuracy of 0.996 and <span class="math inline">\(F_{\beta}\)</span> score with <span class="math inline">\(\beta = 2\)</span> of 0.997 with 12134 correct predictions out of 12181 test observations. In terms of error, the model predicted 22 poisonous mushrooms as edible (false negative) and predicted 25 edible mushrooms as poisonous (false positive).</p>
+<p>Even though the model shows promising performance, a limitation of this project is the lack of incorporation of biological domain knowledge about mushrooms into the feature engineering process, which could further reduce false negatives. This is an area that could be addressed in future work.</p>
 </section>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Mushrooms are the most common food which is rich in vitamins and minerals. However, not all mushrooms can be consumed directly, most of them are poisonous and identifying edible or poisonous mushroom through the naked eye is quite difficult. Our aim is to using machine learning to identify mushrooms edibility. In this project, three methods are used to detect the edibility of mushrooms: Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression.</p>
+<p>Mushrooms are a widely consumed food source known for their rich nutritional content, including essential vitamins and minerals. However, not all mushrooms are safe for consumption, as many species are highly toxic. Eating poisonous mushrooms can lead to severe health consequences, including hospitalization and death, as highlighted in an incident report from <span class="citation" data-cites="cdc2024">Disease Control and (CDC) (<a href="#ref-cdc2024" role="doc-biblioref">2024</a>)</span>.</p>
+<p>Distinguishing between edible and poisonous mushrooms is particularly challenging, especially when dealing with large quantities. According to research by <span class="citation" data-cites="niosh2019">Occupational Safety and (NIOSH) (<a href="#ref-niosh2019" role="doc-biblioref">2019</a>)</span>, in the commercial distribution of agricultural products, there is a risk of mixing edible and poisonous mushrooms. Traditional identification methods rely on human expertise, which can be time-consuming and inconsistent.</p>
+<p>The primary goal of this project is to develop an accurate machine learning model that minimizes false negatives (i.e., misclassifying poisonous mushrooms as edible) while maintaining reasonable overall performance. To achieve this, our project applies machine learning techniques to classify mushroom edibility based on various features, such as color, habitat, and structure. The dataset used in this study contains detailed observations of mushrooms, categorized as either edible or poisonous <span class="citation" data-cites="secondary_mushroom_848">Wagner and Hattab (<a href="#ref-secondary_mushroom_848" role="doc-biblioref">2021</a>)</span>. Our analysis applied three classification algorithms: Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression. These models were chosen for their diverse approaches to classification and their ability to capture complex relationships between features.</p>
 </section>
 <section id="methods" class="level2">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
@@ -236,7 +240,7 @@ Figure&nbsp;3: The Distribution of Feature Stem Width
 Table&nbsp;1: The distribution of cap shape.
 </figcaption>
 <div aria-describedby="tbl-cap-shape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="16">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="44">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -295,7 +299,7 @@ Table&nbsp;1: The distribution of cap shape.
 Table&nbsp;2: The distribution of mushroom cap colors.
 </figcaption>
 <div aria-describedby="tbl-cap-color-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="17">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="45">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -379,7 +383,7 @@ Table&nbsp;2: The distribution of mushroom cap colors.
 Table&nbsp;3: The distribution of mushrooms that bruise or bleed.
 </figcaption>
 <div aria-describedby="tbl-does-bruise-or-bleed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="18">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="46">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -413,7 +417,7 @@ Table&nbsp;3: The distribution of mushrooms that bruise or bleed.
 Table&nbsp;4: The distribution of mushroom gill colors.
 </figcaption>
 <div aria-describedby="tbl-gill-color-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="19">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="47">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -497,7 +501,7 @@ Table&nbsp;4: The distribution of mushroom gill colors.
 Table&nbsp;5: The distribution of mushroom stem colors.
 </figcaption>
 <div aria-describedby="tbl-stem-color-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="20">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="48">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -586,7 +590,7 @@ Table&nbsp;5: The distribution of mushroom stem colors.
 Table&nbsp;6: The distribution of samples that have and do not have rings.
 </figcaption>
 <div aria-describedby="tbl-has-ring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="21">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="49">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -620,7 +624,7 @@ Table&nbsp;6: The distribution of samples that have and do not have rings.
 Table&nbsp;7: The distribution of mushroom ring types.
 </figcaption>
 <div aria-describedby="tbl-ring-type-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="22">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="50">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -684,7 +688,7 @@ Table&nbsp;7: The distribution of mushroom ring types.
 Table&nbsp;8: The distribution of mushroom habitats.
 </figcaption>
 <div aria-describedby="tbl-habitat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="23">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="51">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -748,7 +752,7 @@ Table&nbsp;8: The distribution of mushroom habitats.
 Table&nbsp;9: The distribution of the seasons of which mushrooms are present.
 </figcaption>
 <div aria-describedby="tbl-season-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="24">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="52">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -792,7 +796,7 @@ Table&nbsp;9: The distribution of the seasons of which mushrooms are present.
 Table&nbsp;10: Features dropped from the original dataset prior to processing.
 </figcaption>
 <div aria-describedby="tbl-columns-dropped-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="25">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="53">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -867,8 +871,8 @@ Figure&nbsp;4: The Distribution of Feature Stem Color
 <p>Using <span class="math inline">\(F_{\beta}\)</span>, precision, recall, or confusion matrix to evaluate the model’s performance is advisable in the following procedure.</p>
 </section>
 </section>
-<section id="prediction-model" class="level2">
-<h2 class="anchored" data-anchor-id="prediction-model">Prediction Model</h2>
+<section id="result-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="result-discussion">Result &amp; Discussion</h2>
 <section id="preprocessing-and-model-building" class="level3">
 <h3 class="anchored" data-anchor-id="preprocessing-and-model-building">Preprocessing and Model Building</h3>
 <p>Three classification models including Support Vector Classifier (SVC), K-Nearest Neighbors (KNN), and Logistic Regression are used to predict whether a mushroom is edible or poisonous. Predicting a mushroom to be edible when it is in fact poisonous could have severe health consequences. Therefore the best model should prioritize the minimization of this error. To do this, we can evaluate models on an <span class="math inline">\(F_{\beta}\)</span> score with <span class="math inline">\(\beta = 2\)</span>.</p>
@@ -879,7 +883,7 @@ Figure&nbsp;4: The Distribution of Feature Stem Color
 Table&nbsp;11: Cross-Validation Results by Model
 </figcaption>
 <div aria-describedby="tbl-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="27">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="55">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -922,7 +926,7 @@ Table&nbsp;11: Cross-Validation Results by Model
 Table&nbsp;12: Confusion matrix for the SVM model on test data.
 </figcaption>
 <div aria-describedby="tbl-test-confusion-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="28">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="56">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -952,6 +956,11 @@ Table&nbsp;12: Confusion matrix for the SVM model on test data.
 <p>The prediction model performed quite well on test data, with a final overall accuracy of 0.996 and <span class="math inline">\(F_{\beta}\)</span> score of 0.997 <a href="#tbl-test-confusion-matrix" class="quarto-xref">Table&nbsp;12</a>. The model only makes 47 mistakes out of 12181 test samples. 22 mistakes were predicting a poisonous mushroom as edible (false negative), while 25 mistakes were predicting a edible mushroom as poisonous (false positive). The model’s performance is promising for implementation, as false negatives represent potential safety risks and these errors could lead to consuming poisonous mushrooms, it is minimized to protect users. On the other hand, false positives are less harmful, they may lead to discarding safe mushrooms unnecessarily but do not endanger safety.</p>
 <p>While the overall performance of the SVC model are impressive, efforts could focus on further reducing false negatives to enhance the safety of predictions. It might be important to take a closer look at the 47 misclassified observations to identify specific features contributing to these misclassifications. Implementing feature engineering on those features such as encoding rare categories differently can enhance the model’s power and reduce the misclassification cases. Additionally, trying other classifiers like Decision Tree and Random Forest which are less sensitive to scaling or irrelevant features might improve the prediction.</p>
 </section>
+<section id="limitation-and-future-work" class="level3">
+<h3 class="anchored" data-anchor-id="limitation-and-future-work">Limitation and Future Work</h3>
+<p>While the model yield promising performance, a key limitation is the lack of feature engineering based on domain-specific biological knowledge. There may be interactions between features or specific biological metrics with strong predictive power that were not considered. In future work, integrating such domain knowledge could enhance model performance and further reduce false negatives.</p>
+<p>Additionally, the model still makes mistakes, including false positives and false negatives. Further investigation into the misclassified cases could help us identify patterns and feature interactions that the model failed to capture. These insights could make improvements in both feature engineering and model architecture.</p>
+</section>
 </section>
 <section id="references" class="level2 unnumbered">
 
@@ -965,6 +974,9 @@ Bantilan, Niels. 2020. <em>Pandera: <span>S</span>tatistical <span>D</span>ata <
 <div id="ref-Chorev_Deepchecks_A_Library_2022" class="csl-entry" role="listitem">
 Chorev, Shir, Philip Tannor, Dan Ben Israel, Noam Bressler, Itay Gabbay, Nir Hutnik, Jonatan Liberman, Matan Perlmutter, Yurii Romanyshyn, and Lior Rokach. 2022. <span>“<span class="nocase">Deepchecks: A Library for Testing and Validating Machine Learning Models and Data</span>.”</span> <em>Journal of Machine Learning Research</em> 23: 1–6. <a href="http://jmlr.org/papers/v23/22-0281.html">http://jmlr.org/papers/v23/22-0281.html</a>.
 </div>
+<div id="ref-cdc2024" class="csl-entry" role="listitem">
+Disease Control, Centers for, and Prevention (CDC). 2024. <span>“Outbreak of Mushroom Poisoning Associated with Death Cap Mushrooms.”</span> <em>Morbidity and Mortality Weekly Report (MMWR)</em> 73 (10): 282–84. <a href="https://www.cdc.gov/mmwr/volumes/73/wr/mm7310a1.htm#suggestedcitation">https://www.cdc.gov/mmwr/volumes/73/wr/mm7310a1.htm#suggestedcitation</a>.
+</div>
 <div id="ref-harris2020array" class="csl-entry" role="listitem">
 Harris, Charles R., K. Jarrod Millman, Stéfan J. van der Walt, Ralf Gommers, Pauli Virtanen, David Cournapeau, Eric Wieser, et al. 2020. <span>“Array Programming with <span>NumPy</span>.”</span> <em>Nature</em> 585 (7825): 357–62. <a href="https://doi.org/10.1038/s41586-020-2649-2">https://doi.org/10.1038/s41586-020-2649-2</a>.
 </div>
@@ -976,6 +988,9 @@ Krekel, Holger, Bruno Oliveira, Ronny Pfannschmidt, Floris Bruynooghe, Brianna L
 </div>
 <div id="ref-mckinney-proc-scipy-2010" class="csl-entry" role="listitem">
 McKinney, Wes. 2010. <span>“<span>D</span>ata <span>S</span>tructures for <span>S</span>tatistical <span>C</span>omputing in <span>P</span>ython.”</span> In <em><span>P</span>roceedings of the 9th <span>P</span>ython in <span>S</span>cience <span>C</span>onference</em>, edited by Stéfan van der Walt and Jarrod Millman, 56–61. <a href="https://doi.org/ 10.25080/Majora-92bf1922-00a ">https://doi.org/ 10.25080/Majora-92bf1922-00a </a>.
+</div>
+<div id="ref-niosh2019" class="csl-entry" role="listitem">
+Occupational Safety, National Institute for, and Health (NIOSH). 2019. <span>“Hazardous Mushroom Exposure: An Overlooked Concern in Agriculture and Forestry.”</span> <em>PubMed</em> 45: 31113097. <a href="https://pubmed.ncbi.nlm.nih.gov/31113097/">https://pubmed.ncbi.nlm.nih.gov/31113097/</a>.
 </div>
 <div id="ref-scikit-learn" class="csl-entry" role="listitem">
 Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, et al. 2011. <span>“Scikit-Learn: Machine Learning in <span>P</span>ython.”</span> <em>Journal of Machine Learning Research</em> 12: 2825–30.
