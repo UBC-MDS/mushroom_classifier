@@ -1,3 +1,6 @@
+'''
+Clean the dataset and by recording and removing missing rows and features with many missing values.
+'''
 import click
 import pandas as pd
 import sys
