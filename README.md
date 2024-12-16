@@ -43,44 +43,18 @@ docker compose up
 
 ![](img/docker-jupyterlab-url.png)
 
-4.  To run the analysis, open a terminal in the Jupyterlab environment and run the following commands:
+4.  To run the analysis, open a terminal in the Jupyterlab environment and run the following command:
 
 ```bash
-python scripts/download_data.py \
-    --dataset_id=848 \
-    --raw_path=data/raw/raw_mushroom.csv
-
-python scripts/data_cleaning.py \
-    --input_path=data/raw/raw_mushroom.csv \
-    --output_path=data/processed/cleaned_mushroom.csv \
-    --columns_to_drop_path=data/processed/columns_to_drop.csv \
-    --missing_values_path=results/tables/missing_values_by_column.csv
-
-python scripts/split_n_preprocess.py \
-    --input_path=data/processed/cleaned_mushroom.csv \
-    --output_dir=data/processed \
-    --results_dir=results \
-    --seed=123
-
-python scripts/eda.py \
-    --processed-training-data=data/processed/mushroom_train.csv \
-    --plot-to=results
-
-python scripts/fit_mushroom_classifier.py \
-    --processed-training-data=data/processed/mushroom_train.csv \
-    --preprocessor=results/models/mushroom_preprocessor.pickle \
-    --pipeline-to=results/models \
-    --results-to=results \
-    --seed=123
-
-python scripts/evaluate_mushroom_predictor.py \
-    --cleaned-test-data=data/processed/mushroom_test.csv \
-    --pipeline-from=results/models/mushroom_best_model.pickle \
-    --results-to=results \
-    --seed=123
-    
-quarto render report/*.qmd --to pdf
+make all
 ```
+The report will be generated using the available tables, models, etc.
+If you wish to run the analysis from scratch, run the following command prior to the above command:
+
+```bash
+make clean-all
+```
+__NOTE:__ Models will be trained and produced from scratch, which can take some time.
 
 ###  To exit and clean up the Environment
 
@@ -89,7 +63,6 @@ quarto render report/*.qmd --to pdf
 ## Developer notes
 
 ### Developer dependencies
-
 -   `conda` (version 24.11.0 or higher)
 -   `conda-lock` (version 2.5.7 or higher)
 
