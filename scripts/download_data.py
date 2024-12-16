@@ -1,3 +1,6 @@
+"""
+Download data from UCI ML Repository.
+"""
 import click
 import sys
 import os
