@@ -1,8 +1,10 @@
-# mushroom_classifier
+# Mushroom Edibility Classifier
 
 -   author: Benjamin Frizzell, Hankun Xiao, Yichi Zhang, Mingyang Zhang
 
-This project is part of a data analysis demonstration for DSCI 522 (Data Science Workflows), a course in the Master of Data Science program at the University of British Columbia.
+This project is part of a data analysis demonstration for DSCI 522 (Data Science Workflows), a course in the Master of Data Science program at the University of British Columbia. 
+
+Our aim is to use machine learning to classify mushrooms’ edibility, i.e., whether they are poisonous or edible.
 
 ## About
 
@@ -82,11 +84,8 @@ conda-lock -k explicit --file environment.yml -p linux-64
 
 ## License
 
-The mushroom_classifier is licensed under:
-
--   **Codebase**: MIT License. See [LICENSE.md](https://github.com/UBC-MDS/mushroom_classifier/blob/main/LICENSE).
-
--   **Reports and Visualizations**: Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND 4.0).
+The project is licensed under:
+-   **Codebase, Reports and Visualizations**: Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND 4.0). See [LICENSE.md](https://github.com/UBC-MDS/mushroom_classifier/blob/main/LICENSE).
 
 ## References
 
