@@ -76,7 +76,6 @@ def main(cleaned_test_data, pipeline_from, results_to, seed):
     # Save results
     save_evaluation_results(accuracy, f2_score, results_to)
     save_confusion_matrix(evaluated_data, results_to)
-    plot_confusion_matrix(evaluated_data, results_to)
 
     print("Evaluation complete.")
 
