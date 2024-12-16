@@ -211,7 +211,7 @@ Based on the Frequency and Percentage distribution @fig-target, here are our fin
 Using $F_{\beta}$, precision, recall, or confusion matrix to evaluate the model's performance is advisable in the following procedure.
 
 \newpage
-## Prediction Model
+## Result & Discussion
 ### Preprocessing and Model Building
 ```{python}
 import pandas as pd
@@ -254,6 +254,12 @@ Markdown(table_to_display.to_markdown(index = False))
 The prediction model performed quite well on test data, with a final overall accuracy of `{python} ACCURACY` and $F_{\beta}$ score of `{python} F_BETA` @tbl-test-confusion-matrix. The model only makes `{python} FN + FP` mistakes out of `{python} TOTAL` test samples. `{python} FN` mistakes were predicting a poisonous mushroom as edible (false negative), while `{python} FP` mistakes were predicting a edible mushroom as poisonous (false positive). The model’s performance is promising for implementation, as false negatives represent potential safety risks and these errors could lead to consuming poisonous mushrooms, it is minimized to protect users. On the other hand, false positives are less harmful, they may lead to discarding safe mushrooms unnecessarily but do not endanger safety.
 
 While the overall performance of the SVC model are impressive, efforts could focus on further reducing false negatives to enhance the safety of predictions. It might be important to take a closer look at the `{python} FN + FP` misclassified observations to identify specific features contributing to these misclassifications. Implementing feature engineering on those features such as encoding rare categories differently can enhance the model’s power and reduce the misclassification cases. Additionally, trying other classifiers like Decision Tree and Random Forest which are less sensitive to scaling or irrelevant features might improve the prediction.
+
+### Limitation and Future Work
+
+While the model yield promising performance, a key limitation is the lack of feature engineering based on domain-specific biological knowledge. There may be interactions between features or specific biological metrics with strong predictive power that were not considered. In future work, integrating such domain knowledge could enhance model performance and further reduce false negatives.
+
+Additionally, the model still makes mistakes, including false positives and false negatives. Further investigation into the misclassified cases could help us identify patterns and feature interactions that the model failed to capture. These insights could make improvements in both feature engineering and model architecture.
 
 \newpage
 ## References
