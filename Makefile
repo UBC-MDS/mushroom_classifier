@@ -1,4 +1,4 @@
-.PHONY: all clean-data clean-results clean-models clean-all
+.PHONY: all clean-data clean-results clean-models clean-report clean-all
 
 
 
@@ -86,9 +86,8 @@ results/tables/test_scores.csv
 # run entire analysis
 all: report/mushroom_classifier_report.html report/mushroom_classifier_report.pdf
 
-# remove raw and preprocessed data
+# remove preprocessed data (do not delete raw data in case it becomes unavailable in the future!)
 clean-data:
-	rm -r data/raw/*
 	rm -r data/processed/*
 
 # remove all tables,figures, etc.
@@ -101,10 +100,10 @@ clean-models:
 	rm -r results/models/*
 
 # remove rendered reports
-clean-reports:
+clean-report:
 	rm -rf report/mushroom_classifier_report.html \
 			report/mushroom_classifier_report.pdf \
 			report/mushroom_classifier_report_files
 
-clean-all: clean_data clean-results clean-models clean-reports
+clean-all: clean_data clean-results clean-models clean-report
 	
