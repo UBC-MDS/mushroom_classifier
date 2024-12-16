@@ -19,22 +19,31 @@ results/tables/missing_values_by_column.csv: scripts/data_cleaning.py data/raw/r
     	--columns_to_drop_path=data/processed/columns_to_drop.csv \
     	--missing_values_path=results/tables/missing_values_by_column.csv
 
-# Validate and split data into train and test sets, and output split data and correlation matrix for features.
-# Produce training target variables distribution, build and save the preprocessor, and store the
-# preprocessed training/testing data.
+# Validate data according to specified schema and split into training and testing sets
 results/tables/schema_validate.csv \
 data/processed/mushroom_train.csv \
 data/processed/mushroom_test.csv \
-results/tables/numeric_correlation_matrix.csv \
+results/tables/numeric_correlation_matrix.csv: scripts/data_split.py data/processed/cleaned_mushroom.csv
+	python scripts/data_split.py \
+		--input_path data/processed/cleaned_mushroom.csv \
+		--output_dir data/processed \
+    	--results_dir results \
+    	--seed 123
+
+# build and save preprocessor, save preprocessed training and testing data. Also plot target proportions
 results/figures/target_variable_distribution.png \
 results/models/mushroom_preprocessor.pickle \
 data/processed/scaled_mushroom_train.csv \
-data/processed/scaled_mushroom_test.csv : scripts/split_n_preprocess.py data/processed/cleaned_mushroom.csv
-	python scripts/split_n_preprocess.py \
-    	--input_path=data/processed/cleaned_mushroom.csv \
-    	--output_dir=data/processed \
-    	--results_dir=results \
-    	--seed=123
+data/processed/scaled_mushroom_test.csv : scripts/data_preprocess.py \
+data/processed/cleaned_mushroom.csv \
+data/processed/mushroom_train.csv \
+data/processed/mushroom_test.csv
+	python scripts/data_preprocess.py \
+		--input_path data/processed/cleaned_mushroom.csv \
+		--output_dir data/processed \
+		--results_dir results \
+		--seed 123
+
 
 # Perform exploratory data analysis on training dataset, by producing histograms of numeric features
 # by target and frequency tables of categorical data
@@ -47,7 +56,6 @@ results/tables/*_summary.csv results/figures/*_histogram.png: scripts/eda.py dat
 # Build three model pipelines with the preprocessor, using KNN, SVM, and Logistic Regression classifiers. 
 # Tune each model using cross validation on the training data, and select the model with the best F2 score.
 # Record cross-validation results and save the selected best model. Also save the confusion matrix for the best model.
-
 results/tables/cross_val_results.csv \
 results/models/mushroom_best_model.pickle \
 results/figures/train_confusion_matrix.png: scripts/fit_mushroom_classifier.py data/processed/mushroom_train.csv
@@ -105,5 +113,6 @@ clean-report:
 			report/mushroom_classifier_report.pdf \
 			report/mushroom_classifier_report_files
 
-clean-all: clean_data clean-results clean-models clean-report
+# remove all analysis output
+clean-all: clean-data clean-results clean-models clean-report
 	
