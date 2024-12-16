@@ -10,7 +10,7 @@ author:
   - name: "Mason Zhang"
     affiliation: "UBC Master of Data Science"
 
-date: "2024-12-07"
+date: "2024-12-16"
 jupyter: python3
 format: 
     html:
@@ -50,6 +50,37 @@ def f_beta(precision, recall, beta):
     return round(f_beta_score, 3)
 
 F_BETA = f_beta(PRECISION, RECALL, BETA)
+
+def get_count_and_prop(df, value):
+    """
+    Get count and proportion for a specific value in the first column.
+
+    Parameters:
+    - df (DataFrame): Input DataFrame where the first column name can change.
+    - value: The value to search for in the first column.
+
+    Returns:
+    - dict: A dictionary with keys 'count' and 'prop' (formatted as percentage).
+    """
+    first_column = df.columns[0]
+    count_column = 'Count'
+    proportion_column = 'Proportion'
+
+    # Filter the DataFrame to the value in the first column
+    filtered_row = df[df[first_column] == value]
+
+    if filtered_row.empty:
+        return {'count': 0, 'prop': "0.00%"}
+
+    # Extract the count and frequency
+    count = filtered_row[count_column].values[0]
+    prop = filtered_row[proportion_column].values[0]
+
+    # Format frequency and count
+    prop_percentage = f"{prop * 100:.2f}%"
+    count = f"{count:,}"
+
+    return {'count': count, 'prop': prop_percentage}
 ```
 
 ## Summary
@@ -95,102 +126,126 @@ The EDA shows that all numeric columns in the mushroom dataset are nearly normal
 #| label: tbl-cap-shape
 #| tbl-cap: The distribution of cap shape.
 
-table_to_display = pd.read_csv("../results/tables/cap-shape_summary.csv")
-Markdown(table_to_display.to_markdown(index = False))
+cap_shape_summary_df = pd.read_csv("../results/tables/cap-shape_summary.csv")
+Markdown(cap_shape_summary_df.to_markdown(index = False))
 ```
 
 ```{python}
 #| label: tbl-cap-color
 #| tbl-cap: The distribution of mushroom cap colors.
 
-table_to_display = pd.read_csv("../results/tables/cap-color_summary.csv")
-Markdown(table_to_display.to_markdown(index = False))
+cap_color_summary_df = pd.read_csv("../results/tables/cap-color_summary.csv")
+Markdown(cap_color_summary_df .to_markdown(index = False))
 ```
 
 ```{python}
 #| label: tbl-does-bruise-or-bleed
 #| tbl-cap: The distribution of mushrooms that bruise or bleed.
 
-table_to_display = pd.read_csv("../results/tables/does-bruise-or-bleed_summary.csv")
-Markdown(table_to_display.to_markdown(index = False))
+does_bruise_or_bleed_summary_df = pd.read_csv("../results/tables/does-bruise-or-bleed_summary.csv")
+Markdown(does_bruise_or_bleed_summary_df.to_markdown(index = False))
 ```
 
 ```{python}
 #| label: tbl-gill-color
 #| tbl-cap: The distribution of mushroom gill colors.
 
-table_to_display = pd.read_csv("../results/tables/gill-color_summary.csv")
-Markdown(table_to_display.to_markdown(index = False))
+gill_color_summary_df = pd.read_csv("../results/tables/gill-color_summary.csv")
+Markdown(gill_color_summary_df.to_markdown(index = False))
 ```
 
 ```{python}
 #| label: tbl-stem-color
 #| tbl-cap: The distribution of mushroom stem colors.
 
-table_to_display = pd.read_csv("../results/tables/stem-color_summary.csv")
-Markdown(table_to_display.to_markdown(index = False))
+stem_color_summary_df = pd.read_csv("../results/tables/stem-color_summary.csv")
+Markdown(stem_color_summary_df.to_markdown(index = False))
 ```
 
 ```{python}
 #| label: tbl-has-ring
 #| tbl-cap: The distribution of samples that have and do not have rings.
 
-table_to_display = pd.read_csv("../results/tables/has-ring_summary.csv")
-Markdown(table_to_display.to_markdown(index = False))
+has_ring_summary_df = pd.read_csv("../results/tables/has-ring_summary.csv")
+Markdown(has_ring_summary_df.to_markdown(index = False))
 ```
 
 ```{python}
 #| label: tbl-ring-type
 #| tbl-cap: The distribution of mushroom ring types.
 
-table_to_display = pd.read_csv("../results/tables/ring-type_summary.csv")
-Markdown(table_to_display.to_markdown(index = False))
+ring_type_summary_df = pd.read_csv("../results/tables/ring-type_summary.csv")
+Markdown(ring_type_summary_df.to_markdown(index = False))
 ```
 
 ```{python}
 #| label: tbl-habitat
 #| tbl-cap: The distribution of mushroom habitats.
 
-table_to_display = pd.read_csv("../results/tables/habitat_summary.csv")
-Markdown(table_to_display.to_markdown(index = False))
+habitat_summary_df = pd.read_csv("../results/tables/habitat_summary.csv")
+Markdown(habitat_summary_df.to_markdown(index = False))
 ```
 
 ```{python}
 #| label: tbl-season
 #| tbl-cap: The distribution of the seasons of which mushrooms are present.
 
-table_to_display = pd.read_csv("../results/tables/season_summary.csv")
-Markdown(table_to_display.to_markdown(index = False))
+season_summary_df = pd.read_csv("../results/tables/season_summary.csv")
+Markdown(season_summary_df.to_markdown(index = False))
 ```
 ```{python}
 #| label: tbl-columns-dropped
 #| tbl-cap: Features dropped from the original dataset prior to processing.
 
-table_to_display = pd.read_csv("../data/processed/columns_to_drop.csv")
-Markdown(table_to_display.to_markdown(index = False))
+columns_to_drop_df = pd.read_csv("../data/processed/columns_to_drop.csv")
+Markdown(columns_to_drop_df.to_markdown(index = False))
 ```
 
 
 \newpage
 Based on the Frequency and Percentage distributions, here are our findings:
 
-1.  @tbl-cap-shape: The most common cap shape is `x` (convex), comprising 43.97% of the data. Other shapes like `f` (flat) and `s` (sunken) are also prevalent, while `c` (conical) is the least common with 2.95% appearance.
+1. @tbl-cap-shape: The most common cap shape is `x` (convex), comprising 
+`{python} get_count_and_prop(cap_shape_summary_df, 'x')['prop']` of the data. 
+Other shapes like `f` (flat) and `s` (sunken) are also prevalent, while `c` (conical) 
+is the least common with `{python} get_count_and_prop(cap_shape_summary_df, 'c')['prop']` appearance.
 
-2.  @tbl-cap-color: The most frequently appeared color is `n` (brown), with 39.71% of the data. Other colors like `y` (yellow), `w` (white), and `g` (gray) are also well-represented, while rare colors like `b` (buff) and `l` (blue) appear in less than 2% of the data.
+2. @tbl-cap-color: The most frequently appeared color is `n` (brown), with 
+`{python} get_count_and_prop(cap_color_summary_df, 'n')['prop']` of the data. Other colors like 
+`y` (yellow), `w` (white), and `g` (gray) are also well-represented, while rare colors 
+like `b` (buff) and `l` (blue) appear in less than 2% of the data.
 
-3.  @tbl-does-bruise-or-bleed: The majority of the mushrooms are `f` (do not bruise or bleed), while their counterpart makes up 17.26% of the data.
+3. @tbl-does-bruise-or-bleed: The majority of the mushrooms are `f` (do not bruise or bleed), 
+while their counterpart makes up `{python} get_count_and_prop(does_bruise_or_bleed_summary_df, 't')['prop']` of the data.
 
-4.  @tbl-gill-color: The most common gill color is `w` (white), with 30.45% of the data. Other colors such as `n` (brown) and `y` (yellow) are also frequent, while rare gill colors like `e` (red), `b` (buff), and `u` (purple) appear in less than 2% of the data.
+4. @tbl-gill-color: The most common gill color is `w` (white), with 
+`{python} get_count_and_prop(gill_color_summary_df, 'w')['prop']` of the data. Other colors such as 
+`n` (brown) and `y` (yellow) are also frequent, while rare gill colors like `e` (red), 
+`b` (buff), and `u` (purple) appear in less than 2% of the data.
 
-5.  @tbl-stem-color: `w` (white) and `n` (brown) are the dominating stem colors, accounting for 37.75% and 29.5% of the data, respectively. Other colors like `r` (green), `l` (blue), and `b` (buff) are less frequent, appearing in less than 1% of the observations.
+5. @tbl-stem-color: `w` (white) and `n` (brown) are the dominating stem colors, accounting for 
+`{python} get_count_and_prop(stem_color_summary_df, 'w')['prop']` and 
+`{python} get_count_and_prop(stem_color_summary_df, 'n')['prop']` of the data, respectively. Other colors 
+like `r` (green), `l` (blue), and `b` (buff) are less frequent, appearing in less than 1% of the observations.
 
-6.  @tbl-has-ring: Most mushrooms are `f` (do not have a ring), with 74.84% observations. The remaining 25.16% mushrooms are `t` (have a ring).
+6. @tbl-has-ring: Most mushrooms are `f` (do not have a ring), with 
+`{python} get_count_and_prop(has_ring_summary_df, 'f')['prop']` observations. The remaining 
+`{python} get_count_and_prop(has_ring_summary_df, 't')['prop']` mushrooms are `t` (have a ring).
 
-7.  @tbl-ring-type: `f` (none) is the most common ring type, accounting for 82.3% of the data. Other types like `e` (evanescent) and `z` (zone) are less frequent, while rare types like `m` (movable) occur in less than 1% of the data.
+7. @tbl-ring-type: `f` (none) is the most common ring type, accounting for 
+`{python} get_count_and_prop(ring_type_summary_df, 'f')['prop']` of the data. Other types like 
+`e` (evanescent) and `z` (zone) are less frequent, while rare types like `m` (movable) occur 
+in less than 1% of the data.
 
-8.  @tbl-habitat: The predominant habitat is `d` (woods), with 72.46% appearance. Other habitats such as `g` (grasses) and `l` (leaves) are less common, while `w` (waste), `p` (paths), and `u` (urban) only make up less than 1% of the data individually.
+8. @tbl-habitat: The predominant habitat is `d` (woods), with 
+`{python} get_count_and_prop(habitat_summary_df, 'd')['prop']` appearance. Other habitats such 
+as `g` (grasses) and `l` (leaves) are less common, while `w` (waste), `p` (paths), and `u` (urban) 
+only make up less than 1% of the data individually.
 
-9.   @tbl-season: Most mushrooms grow in `a` (autumn), comprising 49.36% of the data, followed by `u` (summer) at 37.5%. The other two seasons `w` (winter) and `s` (spring) are less frequent.
+9. @tbl-season: Most mushrooms grow in `a` (autumn), comprising 
+`{python} get_count_and_prop(season_summary_df, 'a')['prop']` of the data, followed by `u` (summer) at 
+`{python} get_count_and_prop(season_summary_df, 'u')['prop']`. The other two seasons `w` (winter) and 
+`s` (spring) are less frequent.
 
 Categorical features will be encoded into binary format in the following preprocessing phase with `OneHotEncoder`. Since we are dealing with a mix of binary and non-binary categorical features, for features like `does-bruise-or-bleed` and `has-ring` that have two unique values, they will be handled with `drop='if_binary'` argument to reduce redundancy while still capturing the information.
 
@@ -204,9 +259,13 @@ The target variable `class` represents whether a mushroom is `p` (poisonous) or 
 
 Based on the Frequency and Percentage distribution @fig-target, here are our findings:
 
-1.  `p` (Poisonous): There are 27,143 instances of poisonous mushrooms, accounting for 55.56% of the data.
+```{python}
+class_summary_df = pd.read_csv("../results/tables/class_summary.csv")
+```
 
-2.  `e` (Edible): There are 21,712 instances of edible mushrooms, constituting 44.44% of the data.
+1.  `p` (Poisonous): There are `{python} get_count_and_prop(class_summary_df, 'p')['count']` instances of poisonous mushrooms, accounting for `{python} get_count_and_prop(class_summary_df, 'p')['prop']` of the data.
+
+2.  `e` (Edible): There are `{python} get_count_and_prop(class_summary_df, 'e')['count']` instances of edible mushrooms, constituting `{python} get_count_and_prop(class_summary_df, 'e')['prop']` of the data.
 
 Using $F_{\beta}$, precision, recall, or confusion matrix to evaluate the model's performance is advisable in the following procedure.
 
@@ -247,8 +306,8 @@ In @tbl-cv, we can see that after tuning the hyperparameter, the Logistic Regres
 #| label: tbl-test-confusion-matrix
 #| tbl-cap: Confusion matrix for the SVM model on test data.
 
-table_to_display = pd.read_csv("../results/tables/test_confusion_matrix.csv")
-Markdown(table_to_display.to_markdown(index = False))
+test_confusion_matrix_df = pd.read_csv("../results/tables/test_confusion_matrix.csv")
+Markdown(test_confusion_matrix_df.to_markdown(index = False))
 ```
 
 The prediction model performed quite well on test data, with a final overall accuracy of `{python} ACCURACY` and $F_{\beta}$ score of `{python} F_BETA` @tbl-test-confusion-matrix. The model only makes `{python} FN + FP` mistakes out of `{python} TOTAL` test samples. `{python} FN` mistakes were predicting a poisonous mushroom as edible (false negative), while `{python} FP` mistakes were predicting a edible mushroom as poisonous (false positive). The model’s performance is promising for implementation, as false negatives represent potential safety risks and these errors could lead to consuming poisonous mushrooms, it is minimized to protect users. On the other hand, false positives are less harmful, they may lead to discarding safe mushrooms unnecessarily but do not endanger safety.
