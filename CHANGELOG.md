@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Discuss disadvantages of selected model, add alternatives ([1d14c](https://github.com/UBC-MDS/mushroom_classifier/commit/1d14c6dfa9cdb7d3040243f9eae7feadb9c5d6c8))
 
 ## Changed
+- Categorical feature distributions are now displayed as Markdown tables in the report, and referenced as such ([1d14c](https://github.com/UBC-MDS/mushroom_classifier/commit/1d14c6dfa9cdb7d3040243f9eae7feadb9c5d6c8))
 
 ### Removed
 - `.ipynb_checkpoint` and other cache files: ([c2d05](https://github.com/UBC-MDS/mushroom_classifier/commit/c2d052bdb806d2432283e7504a10e0d1891c0d20))
