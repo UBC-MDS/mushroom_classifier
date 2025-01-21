@@ -1,0 +1,102 @@
+---
+title: "Mushroom Classifier"
+format: revealjs
+author:
+  - name: Benjamin Frizzell
+  - name: Essie Zhang
+  - name: Hankun Xiao
+  - name: Mason Zhang
+---
+
+## Summary
+
+
+---
+
+## Exploratory Data Analysis
+
+
+---
+
+## Preprocessing the Data
+### Categorical Data
+* Many categorical features in our dataset
+* Our models will require numeric features
+
+
+---
+
+## Preprocessing the Data
+### Binary Encoding
+
+* Binary features: `does-bruise-or-bleed` and `has-ring`
+* (insert sample table of binary encoding)
+
+---
+
+## Preprocessing the Data
+### One-Hot Encoding
+
+* Multi-leveled categorical features: color, shape, and habitat
+* Some features have many categories, so we need to watch for impact of
+dimensionality on model performance
+
+---
+
+`OneHotEncoder(drop='if_binary', handle_unknown='ignore')`
+
+(insert sample table of one-hot encoding)
+
+
+---
+
+## Preprocessing the Data
+### Numeric Features
+
+* Numeric features show some skewness
+* Models can be sensitive to extreme feature values
+* Need an appropriate transformation
+
+
+---
+
+## Preprocessing the Data
+### Quantile Transformer
+
+1. Map features to empirical quantiles
+2. Map quantiles to chosen distribution (eg. Normal)
+
+* Outliers become less influential, small differences become 
+more pronounced
+
+---
+
+`QuantileTransformer(output_distribution='normal')`
+(plot of quantile transformation)
+
+---
+
+## Model Selection
+
+* Logistic Regression: Fast and interpretable, good baseline, probability output to gauge uncertainty
+* KNN: Simple, good performance, may struggle with dimensionality
+* SVC: Very good performance, lacks interpretability, slow training time
+
+---
+
+## Selecting the Best Model
+
+* $F_{\beta}$ score
+* $\beta = 2$ weighs recall higher than precision, and focuses on 
+minimizing false negatives
+
+---
+
+## Results
+
+
+---
+
+## Improvements
+
+
