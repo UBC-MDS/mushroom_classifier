@@ -93,10 +93,19 @@ minimizing false negatives
 ---
 
 ## Results
+### Model Performance Comparison
+![three models performance](../results/figures/model_result.png){#fig-results width=40%}
+
+---
+## Results
+### SVC Model Evaluation
 
 
 ---
 
-## Improvements
+## Results
+### Model Performance Comparison
 
+---
 
+## Limitation and Improvements
