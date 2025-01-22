@@ -433,15 +433,37 @@ Mason Zhang
 <h2>Results</h2>
 <h3 id="model-performance-comparison">Model Performance Comparison</h3>
 
-<img data-src="../results/figures/model_result.png" style="width:40.0%" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;1: three models performance
-</p></section>
+<img data-src="img/model_result.png" class="r-stretch"><ul>
+<li>SVC performs the best: ideal choice</li>
+<li>Logistic Regression: suitable alternative for faster training</li>
+</ul>
+</section>
 <section id="results-1" class="slide level2">
 <h2>Results</h2>
-<h3 id="model-performance-comparison-1">Model Performance Comparison</h3>
+<h3 id="svc-model-evaluation">SVC Model Evaluation</h3>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><img data-src="img/cm.png"></p>
+</div><div class="column" style="width:40%;">
+<ul>
+<li>45 mistakes out of 12,181 test samples</li>
+<li>20 false negatives are the most critical</li>
+</ul>
+</div></div>
 </section>
 <section id="limitation-and-improvements" class="slide level2">
 <h2>Limitation and Improvements</h2>
+<ul>
+<li>Limitation: Lack of feature engineering</li>
+<li>Future Improvements:
+<ul>
+<li>Investigating misclassified cases</li>
+<li>Integrating domain knowledge</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 

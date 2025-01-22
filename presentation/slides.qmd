@@ -94,18 +94,37 @@ minimizing false negatives
 
 ## Results
 ### Model Performance Comparison
-![three models performance](../results/figures/model_result.png){#fig-results width=40%}
+![](img/model_result.png)
+
+* SVC performs the best: ideal choice
+* Logistic Regression: suitable alternative for faster training
 
 ---
+
 ## Results
 ### SVC Model Evaluation
 
+:::: {.columns}
 
----
+::: {.column width="60%"}
+![](img/cm.png)
 
-## Results
-### Model Performance Comparison
+:::
+
+
+::: {.column width="40%"}
+* 45 mistakes out of 12,181 test samples
+* 20 false negatives are the most critical
+:::
+
+::::
 
 ---
 
 ## Limitation and Improvements
+* Limitation: Lack of feature engineering
+* Future Improvements:
+  * Investigating misclassified cases 
+  * Integrating domain knowledge
+
+---
