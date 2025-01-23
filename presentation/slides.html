@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="slides_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="slides_files/libs/clipboard/clipboard.min.js"></script>
 <script src="slides_files/libs/quarto-html/tabby.min.js"></script>
 <script src="slides_files/libs/quarto-html/popper.min.js"></script>
 <script src="slides_files/libs/quarto-html/tippy.umd.min.js"></script>
@@ -8,7 +8,7 @@
 <link href="slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="slides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="slides_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.5.56">
+  <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Benjamin Frizzell">
   <meta name="author" content="Essie Zhang">
@@ -323,6 +323,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -363,43 +366,244 @@ Mason Zhang
 </section>
 <section id="preprocessing-the-data" class="slide level2">
 <h2>Preprocessing the Data</h2>
-<h3 id="categorical-data">Categorical Data</h3>
+<h3 id="categorical-features">Categorical Features</h3>
 <ul>
-<li>Many categorical features in our dataset</li>
-<li>Our models will require numeric features</li>
+<li>Many binary and multi-leveled categorical features in our dataset</li>
+<li>Binary features: <code>does-bruise-or-bleed</code> and <code>has-ring</code></li>
+<li>Categorical features: color, shape, and habitat</li>
+<li>We are not using Decision Trees, as they tend to show poor performance compared to other classifiers</li>
+<li>Therefore, we need to transform categories to numeric values</li>
 </ul>
 </section>
 <section id="preprocessing-the-data-1" class="slide level2">
 <h2>Preprocessing the Data</h2>
-<h3 id="binary-encoding">Binary Encoding</h3>
-<ul>
-<li>Binary features: <code>does-bruise-or-bleed</code> and <code>has-ring</code></li>
-<li>(insert sample table of binary encoding)</li>
-</ul>
-</section>
-<section id="preprocessing-the-data-2" class="slide level2">
-<h2>Preprocessing the Data</h2>
 <h3 id="one-hot-encoding">One-Hot Encoding</h3>
 <ul>
-<li>Multi-leveled categorical features: color, shape, and habitat</li>
-<li>Some features have many categories, so we need to watch for impact of dimensionality on model performance</li>
+<li>Simple way to handle both binary and multi-leveled categories</li>
+<li><strong>dimensionality:</strong> creates many more columns, might be problematic</li>
 </ul>
 </section>
 <section class="slide level2">
 
-<p><code>OneHotEncoder(drop='if_binary', handle_unknown='ignore')</code></p>
-<p>(insert sample table of one-hot encoding)</p>
+<h3 id="raw-categorical-data">Raw Categorical Data</h3>
+<div id="cc07a667" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">cap-shape</th>
+<th data-quarto-table-cell-role="th">cap-color</th>
+<th data-quarto-table-cell-role="th">does-bruise-or-bleed</th>
+<th data-quarto-table-cell-role="th">gill-color</th>
+<th data-quarto-table-cell-role="th">stem-color</th>
+<th data-quarto-table-cell-role="th">has-ring</th>
+<th data-quarto-table-cell-role="th">ring-type</th>
+<th data-quarto-table-cell-role="th">habitat</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>x</td>
+<td>y</td>
+<td>f</td>
+<td>w</td>
+<td>g</td>
+<td>f</td>
+<td>f</td>
+<td>d</td>
+<td>a</td>
+<td>e</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>f</td>
+<td>n</td>
+<td>t</td>
+<td>p</td>
+<td>g</td>
+<td>f</td>
+<td>f</td>
+<td>d</td>
+<td>a</td>
+<td>e</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>s</td>
+<td>y</td>
+<td>f</td>
+<td>f</td>
+<td>y</td>
+<td>f</td>
+<td>f</td>
+<td>d</td>
+<td>a</td>
+<td>p</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
-<section id="preprocessing-the-data-3" class="slide level2">
+<section class="slide level2">
+
+<p><code>OneHotEncoder(drop='if_binary', handle_unknown='ignore')</code></p>
+<div id="7e4f365c" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">cap-shape_b</th>
+<th data-quarto-table-cell-role="th">cap-shape_c</th>
+<th data-quarto-table-cell-role="th">cap-shape_f</th>
+<th data-quarto-table-cell-role="th">cap-shape_o</th>
+<th data-quarto-table-cell-role="th">cap-shape_p</th>
+<th data-quarto-table-cell-role="th">cap-shape_s</th>
+<th data-quarto-table-cell-role="th">cap-shape_x</th>
+<th data-quarto-table-cell-role="th">cap-color_b</th>
+<th data-quarto-table-cell-role="th">cap-color_e</th>
+<th data-quarto-table-cell-role="th">cap-color_g</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">habitat_l</th>
+<th data-quarto-table-cell-role="th">habitat_m</th>
+<th data-quarto-table-cell-role="th">habitat_p</th>
+<th data-quarto-table-cell-role="th">habitat_u</th>
+<th data-quarto-table-cell-role="th">habitat_w</th>
+<th data-quarto-table-cell-role="th">season_a</th>
+<th data-quarto-table-cell-role="th">season_s</th>
+<th data-quarto-table-cell-role="th">season_u</th>
+<th data-quarto-table-cell-role="th">season_w</th>
+<th data-quarto-table-cell-role="th">class_p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 68 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="preprocessing-the-data-2" class="slide level2">
 <h2>Preprocessing the Data</h2>
 <h3 id="numeric-features">Numeric Features</h3>
 <ul>
 <li>Numeric features show some skewness</li>
 <li>Models can be sensitive to extreme feature values</li>
-<li>Need an appropriate transformation</li>
+<li>Need an appropriate transformation to handle this</li>
 </ul>
 </section>
-<section id="preprocessing-the-data-4" class="slide level2">
+<section id="preprocessing-the-data-3" class="slide level2">
 <h2>Preprocessing the Data</h2>
 <h3 id="quantile-transformer">Quantile Transformer</h3>
 <ol type="1">

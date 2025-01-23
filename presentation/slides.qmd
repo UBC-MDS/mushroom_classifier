@@ -6,6 +6,10 @@ author:
   - name: Essie Zhang
   - name: Hankun Xiao
   - name: Mason Zhang
+jupyter: python3
+execute:
+  kernel: mushroom_classifier_env
+  interactive: true  
 ---
 
 ## Summary
@@ -19,34 +23,49 @@ author:
 ---
 
 ## Preprocessing the Data
-### Categorical Data
-* Many categorical features in our dataset
-* Our models will require numeric features
+### Categorical Features
 
-
----
-
-## Preprocessing the Data
-### Binary Encoding
-
+* Many binary and multi-leveled categorical features in our dataset
 * Binary features: `does-bruise-or-bleed` and `has-ring`
-* (insert sample table of binary encoding)
+* Categorical features: color, shape, and habitat
+* We are not using Decision Trees, as they tend to show poor performance
+compared to other classifiers
+* Therefore, we need to transform categories to numeric values
 
 ---
 
 ## Preprocessing the Data
 ### One-Hot Encoding
 
-* Multi-leveled categorical features: color, shape, and habitat
-* Some features have many categories, so we need to watch for impact of
-dimensionality on model performance
+* Simple way to handle both binary and multi-leveled categories
+* __dimensionality:__ creates many more columns, might be problematic
+---
 
+```{python load-data, echo=false}
+# hidden code to load in preprocessor and unprocessed dataset
+from sklearn.preprocessing import OneHotEncoder
+import pandas as pd
+import numpy as np
+mushroom_data = pd.read_csv("../data/processed/mushroom_train.csv")
+categorical_data = mushroom_data.select_dtypes(exclude=np.float64)
+```
+### Raw Categorical Data
+
+```{python show-raw, echo=false, interactive=true}
+categorical_data.head(3)
+```
 ---
 
 `OneHotEncoder(drop='if_binary', handle_unknown='ignore')`
+```{python show-raw, echo=false, interactive=true}
+# show effect of OHE on categorical data
 
-(insert sample table of one-hot encoding)
+ohe = OneHotEncoder(drop='if_binary', handle_unknown='ignore',sparse_output=False)
+ohe_df = pd.DataFrame(ohe.fit_transform(categorical_data),dtype=int)
 
+ohe_df.columns = ohe.get_feature_names_out()
+ohe_df.head(3)
+```
 
 ---
 
@@ -55,8 +74,7 @@ dimensionality on model performance
 
 * Numeric features show some skewness
 * Models can be sensitive to extreme feature values
-* Need an appropriate transformation
-
+* Need an appropriate transformation to handle this
 
 ---
 
