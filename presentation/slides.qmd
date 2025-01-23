@@ -86,11 +86,12 @@ ohe_df.head(3)
 
 * Outliers become less influential, small differences become 
 more pronounced
+* Nonlinear transformation, so we lose some interpretability
 
 ---
 
-`QuantileTransformer(output_distribution='normal')`
-(plot of quantile transformation)
+`QuantileTransformer(output_distribution='uniform')`
+![QuantileTransformer result]()
 
 ---
 
@@ -104,9 +105,13 @@ more pronounced
 
 ## Selecting the Best Model
 
-* $F_{\beta}$ score
-* $\beta = 2$ weighs recall higher than precision, and focuses on 
+* We could reasonably use accuracy as we have class balance, but we chose $F_{\beta}$ score:
+$$
+F_{\beta} = (1 + \beta^2) \times \frac{\text{precision} \times \text{recall}}{\beta^2 \times \text{precision} + \text{recall}}
+$$
+$\beta = 2$ weighs recall higher than precision, and focuses on 
 minimizing false negatives
+* Important for classifying mushrooms: we want to **limit consumption of poisonous mushrooms**!
 
 ---
 

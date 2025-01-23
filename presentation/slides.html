@@ -386,7 +386,7 @@ Mason Zhang
 <section class="slide level2">
 
 <h3 id="raw-categorical-data">Raw Categorical Data</h3>
-<div id="cc07a667" class="cell" data-execution_count="2">
+<div id="376d17ed" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 <style scoped="">
@@ -469,7 +469,7 @@ Mason Zhang
 <section class="slide level2">
 
 <p><code>OneHotEncoder(drop='if_binary', handle_unknown='ignore')</code></p>
-<div id="7e4f365c" class="cell" data-execution_count="3">
+<div id="d5687e93" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 <style scoped="">
@@ -612,11 +612,12 @@ Mason Zhang
 </ol>
 <ul>
 <li>Outliers become less influential, small differences become more pronounced</li>
+<li>Nonlinear transformation, so we lose some interpretability</li>
 </ul>
 </section>
 <section class="slide level2">
 
-<p><code>QuantileTransformer(output_distribution='normal')</code> (plot of quantile transformation)</p>
+<p><code>QuantileTransformer(output_distribution='uniform')</code> <img data-src=".png" alt="QuantileTransformer result"></p>
 </section>
 <section id="model-selection" class="slide level2">
 <h2>Model Selection</h2>
@@ -629,8 +630,10 @@ Mason Zhang
 <section id="selecting-the-best-model" class="slide level2">
 <h2>Selecting the Best Model</h2>
 <ul>
-<li><span class="math inline">\(F_{\beta}\)</span> score</li>
-<li><span class="math inline">\(\beta = 2\)</span> weighs recall higher than precision, and focuses on minimizing false negatives</li>
+<li>We could reasonably use accuracy as we have class balance, but we chose <span class="math inline">\(F_{\beta}\)</span> score: <span class="math display">\[
+F_{\beta} = (1 + \beta^2) \times \frac{\text{precision} \times \text{recall}}{\beta^2 \times \text{precision} + \text{recall}}
+\]</span> <span class="math inline">\(\beta = 2\)</span> weighs recall higher than precision, and focuses on minimizing false negatives</li>
+<li>Important for classifying mushrooms: we want to <strong>limit consumption of poisonous mushrooms</strong>!</li>
 </ul>
 </section>
 <section id="results" class="slide level2">
