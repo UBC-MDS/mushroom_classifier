@@ -57,7 +57,7 @@ categorical_data.head(3)
 ---
 
 `OneHotEncoder(drop='if_binary', handle_unknown='ignore')`
-```{python show-raw, echo=false, interactive=true}
+```{python show-raw, echo=true, interactive=true}
 # show effect of OHE on categorical data
 
 ohe = OneHotEncoder(drop='if_binary', handle_unknown='ignore',sparse_output=False)
@@ -80,9 +80,8 @@ ohe_df.head(3)
 
 ## Preprocessing the Data
 ### Quantile Transformer
-
 1. Map features to empirical quantiles
-2. Map quantiles to chosen distribution (eg. Normal)
+2. Map quantiles to chosen distribution (eg. Normal or Uniform)
 
 * Outliers become less influential, small differences become 
 more pronounced
@@ -90,8 +89,8 @@ more pronounced
 
 ---
 
-`QuantileTransformer(output_distribution='uniform')`
-![QuantileTransformer result]()
+`QuantileTransformer(output_distribution='normal')`
+![QuantileTransformer result](img/quant_transform.png)
 
 ---
 

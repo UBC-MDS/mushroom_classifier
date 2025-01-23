@@ -386,8 +386,8 @@ Mason Zhang
 <section class="slide level2">
 
 <h3 id="raw-categorical-data">Raw Categorical Data</h3>
-<div id="376d17ed" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div id="ded7fc2f" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -469,8 +469,8 @@ Mason Zhang
 <section class="slide level2">
 
 <p><code>OneHotEncoder(drop='if_binary', handle_unknown='ignore')</code></p>
-<div id="d5687e93" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div id="1cec2cc9" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -608,7 +608,7 @@ Mason Zhang
 <h3 id="quantile-transformer">Quantile Transformer</h3>
 <ol type="1">
 <li>Map features to empirical quantiles</li>
-<li>Map quantiles to chosen distribution (eg. Normal)</li>
+<li>Map quantiles to chosen distribution (eg. Normal or Uniform)</li>
 </ol>
 <ul>
 <li>Outliers become less influential, small differences become more pronounced</li>
@@ -617,7 +617,7 @@ Mason Zhang
 </section>
 <section class="slide level2">
 
-<p><code>QuantileTransformer(output_distribution='uniform')</code> <img data-src=".png" alt="QuantileTransformer result"></p>
+<p><code>QuantileTransformer(output_distribution='normal')</code> <img data-src="img/quant_transform.png" alt="QuantileTransformer result"></p>
 </section>
 <section id="model-selection" class="slide level2">
 <h2>Model Selection</h2>
