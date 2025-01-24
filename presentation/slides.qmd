@@ -12,8 +12,54 @@ execute:
   interactive: true  
 ---
 
-## Summary
+## Introduction
+### Understanding Mushroom Safety Through Machine Learning
 
+:::: {.columns}
+
+::: {.column width="60%"}
+- Mushrooms are nutritious but can be life-threatening.
+- Distinguishing edible from poisonous mushrooms is challenging.
+- Our solution: A machine learning model focused on safety, minimizing life-threatening false negatives.
+:::
+
+
+::: {.column width="40%"}
+![](img/destroying_angel_look-alikes.png)
+:::
+
+::::
+
+---
+
+## Introduction
+### Project Goal and Approach
+- **Goal**: Build a model to classify mushroom edibility while minimizing false negatives.
+- **Dataset**: Over 60,000 mushroom samples categorized by color, structure, and habitat.
+- **Approach**:
+  - Models: SVC, KNN, Logistic Regression.
+  - Priority: Safety (recall and F₂ score emphasized).
+
+---
+
+## Concluding Summary
+### Results and Limitations
+- **Results**
+  - SVC achieved 99.6% accuracy and 99.7% F₂ score.
+  - Only 22 false negatives out of 12,181 predictions.
+- **Limitations**
+  - Biological domain knowledge not integrated.
+  - Room to further reduce false negatives.
+
+---
+
+## Concluding Summary
+### Future Directions
+  - Collaborate with mycologists to identify key biological interactions between mushroom features.
+  - Develop a mobile app to make mushroom safety assessments accessible to foragers and farmers.
+
+![](img/mycology.png){width=200px}
+![](img/mobile-app.png){width=200px}
 
 ---
 
@@ -148,5 +194,12 @@ minimizing false negatives
 * Future Improvements:
   * Investigating misclassified cases 
   * Integrating domain knowledge
+
+---
+
+## References
+- "Edible and Poisonous Mushrooms Side by Side." Mushroom Exam, https://mushroomexam.com/mushroom_look_alikes.html. Accessed January 24, 2025.
+- "Mycology Icon" by Freepik, available at Flaticon. Accessed January 24, 2025.
+- "Mobile App Icon" by Freepik, available at Flaticon. Accessed January 24, 2025.
 
 ---

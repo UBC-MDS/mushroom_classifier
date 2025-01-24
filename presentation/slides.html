@@ -8,7 +8,7 @@
 <link href="slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="slides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="slides_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.5.57">
+  <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Benjamin Frizzell">
   <meta name="author" content="Essie Zhang">
@@ -358,8 +358,57 @@ Mason Zhang
 </div>
 
 </section>
-<section id="summary" class="slide level2">
-<h2>Summary</h2>
+<section id="introduction" class="slide level2">
+<h2>Introduction</h2>
+<h3 id="understanding-mushroom-safety-through-machine-learning">Understanding Mushroom Safety Through Machine Learning</h3>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li>Mushrooms are nutritious but can be life-threatening.</li>
+<li>Distinguishing edible from poisonous mushrooms is challenging.</li>
+<li>Our solution: A machine learning model focused on safety, minimizing life-threatening false negatives.</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="img/destroying_angel_look-alikes.png"></p>
+</div></div>
+</section>
+<section id="introduction-1" class="slide level2">
+<h2>Introduction</h2>
+<h3 id="project-goal-and-approach">Project Goal and Approach</h3>
+<ul>
+<li><strong>Goal</strong>: Build a model to classify mushroom edibility while minimizing false negatives.</li>
+<li><strong>Dataset</strong>: Over 60,000 mushroom samples categorized by color, structure, and habitat.</li>
+<li><strong>Approach</strong>:
+<ul>
+<li>Models: SVC, KNN, Logistic Regression.</li>
+<li>Priority: Safety (recall and F₂ score emphasized).</li>
+</ul></li>
+</ul>
+</section>
+<section id="concluding-summary" class="slide level2">
+<h2>Concluding Summary</h2>
+<h3 id="results-and-limitations">Results and Limitations</h3>
+<ul>
+<li><strong>Results</strong>
+<ul>
+<li>SVC achieved 99.6% accuracy and 99.7% F₂ score.</li>
+<li>Only 22 false negatives out of 12,181 predictions.</li>
+</ul></li>
+<li><strong>Limitations</strong>
+<ul>
+<li>Biological domain knowledge not integrated.</li>
+<li>Room to further reduce false negatives.</li>
+</ul></li>
+</ul>
+</section>
+<section id="concluding-summary-1" class="slide level2">
+<h2>Concluding Summary</h2>
+<h3 id="future-directions">Future Directions</h3>
+<ul>
+<li>Collaborate with mycologists to identify key biological interactions between mushroom features.</li>
+<li>Develop a mobile app to make mushroom safety assessments accessible to foragers and farmers.</li>
+</ul>
+<p><img data-src="img/mycology.png" width="200"> <img data-src="img/mobile-app.png" width="200"></p>
 </section>
 <section id="exploratory-data-analysis" class="slide level2">
 <h2>Exploratory Data Analysis</h2>
@@ -386,8 +435,8 @@ Mason Zhang
 <section class="slide level2">
 
 <h3 id="raw-categorical-data">Raw Categorical Data</h3>
-<div id="ded7fc2f" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div id="8e16b5a0" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -469,8 +518,8 @@ Mason Zhang
 <section class="slide level2">
 
 <p><code>OneHotEncoder(drop='if_binary', handle_unknown='ignore')</code></p>
-<div id="1cec2cc9" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div id="ad6f2380" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -667,6 +716,14 @@ F_{\beta} = (1 + \beta^2) \times \frac{\text{precision} \times \text{recall}}{\b
 <li>Investigating misclassified cases</li>
 <li>Integrating domain knowledge</li>
 </ul></li>
+</ul>
+</section>
+<section id="references" class="slide level2">
+<h2>References</h2>
+<ul>
+<li>“Edible and Poisonous Mushrooms Side by Side.” Mushroom Exam, https://mushroomexam.com/mushroom_look_alikes.html. Accessed January 24, 2025.</li>
+<li>“Mycology Icon” by Freepik, available at Flaticon. Accessed January 24, 2025.</li>
+<li>“Mobile App Icon” by Freepik, available at Flaticon. Accessed January 24, 2025.</li>
 </ul>
 </section>
 <section class="slide level2">
