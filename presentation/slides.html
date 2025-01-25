@@ -8,7 +8,7 @@
 <link href="slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="slides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="slides_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.5.56">
+  <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Benjamin Frizzell">
   <meta name="author" content="Essie Zhang">
@@ -410,8 +410,200 @@ Mason Zhang
 </ul>
 <p><img data-src="img/mycology.png" width="200"> <img data-src="img/mobile-app.png" width="200"></p>
 </section>
+<section id="data-validation" class="slide level2">
+<h2>Data Validation</h2>
+<h3 id="summary-61069-observations-and-20-features">Summary: 61069 observations and 20 features</h3>
+<h3 id="missing-values-in-some-features">Missing values in some features</h3>
+<div id="cell-missing-values-summary" class="cell" data-execution_count="2">
+<div id="missing-values-summary" class="cell-output cell-output-display cell-output-markdown" data-execution_count="14">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Feature</th>
+<th style="text-align: right;"># Missing Value</th>
+<th style="text-align: left;">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">veil-type</td>
+<td style="text-align: right;">57892</td>
+<td style="text-align: left;">94.8%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">spore-print-color</td>
+<td style="text-align: right;">54715</td>
+<td style="text-align: left;">89.6%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">veil-color</td>
+<td style="text-align: right;">53656</td>
+<td style="text-align: left;">87.86%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">stem-root</td>
+<td style="text-align: right;">51538</td>
+<td style="text-align: left;">84.39%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">stem-surface</td>
+<td style="text-align: right;">38124</td>
+<td style="text-align: left;">62.43%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
 <section id="exploratory-data-analysis" class="slide level2">
 <h2>Exploratory Data Analysis</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><br></p>
+<ul>
+<li><p>Target Distribution</p></li>
+<li><p>Categorical Features Distribution</p></li>
+<li><p>Numerical Features Distribution</p></li>
+</ul>
+</div><div class="column" style="width:35%;">
+<p><img data-src="img/eda_maginifier.png"></p>
+</div></div>
+</section>
+<section id="exploratory-data-analysis-1" class="slide level2">
+<h2>Exploratory Data Analysis</h2>
+<h3 id="target-distribution">Target Distribution</h3>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><img data-src="../results/figures/target_variable_distribution.png" style="width:120.0%"></p>
+</div><div class="column" style="width:40%;">
+<p><br></p>
+<p>Finding: Balanced Class</p>
+<ul>
+<li>p(poisonous) 55%<br>
+</li>
+<li>e(edible) 45%<br>
+</li>
+</ul>
+</div></div>
+</section>
+<section id="exploratory-data-analysis-2" class="slide level2">
+<h2>Exploratory Data Analysis</h2>
+<h3 id="categorical-features-distribution">Categorical Features Distribution</h3>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>9</strong> Categorical Variables:</p>
+<ul>
+<li>Cap Shape</li>
+<li>Cap Colors</li>
+<li>Bruise or Bleed</li>
+<li>Gill Colors</li>
+<li>…</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<p><em>Example: Cap Color Distribution</em></p>
+<div id="tbl-cap-color" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="15">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Cap Color</th>
+<th style="text-align: right;">Count</th>
+<th style="text-align: left;">Proportion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">brown</td>
+<td style="text-align: right;">19407</td>
+<td style="text-align: left;">39.83%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">yellow</td>
+<td style="text-align: right;">6876</td>
+<td style="text-align: left;">14.11%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: right;">6175</td>
+<td style="text-align: left;">12.67%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gray</td>
+<td style="text-align: right;">3410</td>
+<td style="text-align: left;">7.0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">red</td>
+<td style="text-align: right;">3205</td>
+<td style="text-align: left;">6.58%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">orange</td>
+<td style="text-align: right;">2905</td>
+<td style="text-align: left;">5.96%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">green</td>
+<td style="text-align: right;">1399</td>
+<td style="text-align: left;">2.87%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">purple</td>
+<td style="text-align: right;">1355</td>
+<td style="text-align: left;">2.78%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pink</td>
+<td style="text-align: right;">1332</td>
+<td style="text-align: left;">2.73%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: right;">1016</td>
+<td style="text-align: left;">2.09%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">buff</td>
+<td style="text-align: right;">964</td>
+<td style="text-align: left;">1.98%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">blue</td>
+<td style="text-align: right;">678</td>
+<td style="text-align: left;">1.39%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></div>
+</section>
+<section id="exploratory-data-analysis-3" class="slide level2">
+<h2>Exploratory Data Analysis</h2>
+<h3 id="numerical-features-distribution">Numerical Features Distribution</h3>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../results/figures/cap-diameter_histogram.png" style="width:120.0%"></p>
+<figcaption>Cap Diameter</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../results/figures/stem-height_histogram.png" style="width:120.0%"></p>
+<figcaption>Stem Height</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../results/figures/stem-width_histogram.png" style="width:120.0%"></p>
+<figcaption>Stem Width</figcaption>
+</figure>
+</div>
+</div></div>
 </section>
 <section id="preprocessing-the-data" class="slide level2">
 <h2>Preprocessing the Data</h2>
@@ -435,8 +627,8 @@ Mason Zhang
 <section class="slide level2">
 
 <h3 id="raw-categorical-data">Raw Categorical Data</h3>
-<div id="8e16b5a0" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div id="b1d7b3b9" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="17">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -518,8 +710,8 @@ Mason Zhang
 <section class="slide level2">
 
 <p><code>OneHotEncoder(drop='if_binary', handle_unknown='ignore')</code></p>
-<div id="ad6f2380" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div id="14e116d6" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -724,6 +916,7 @@ F_{\beta} = (1 + \beta^2) \times \frac{\text{precision} \times \text{recall}}{\b
 <li>“Edible and Poisonous Mushrooms Side by Side.” Mushroom Exam, https://mushroomexam.com/mushroom_look_alikes.html. Accessed January 24, 2025.</li>
 <li>“Mycology Icon” by Freepik, available at Flaticon. Accessed January 24, 2025.</li>
 <li>“Mobile App Icon” by Freepik, available at Flaticon. Accessed January 24, 2025.</li>
+<li>“EDA Magnifier,” generated using Applied Intelligence. Accessed January 25, 2025.</li>
 </ul>
 </section>
 <section class="slide level2">

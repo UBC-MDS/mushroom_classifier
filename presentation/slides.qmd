@@ -11,6 +11,14 @@ execute:
   kernel: mushroom_classifier_env
   interactive: true  
 ---
+```{python}
+# import libraries here
+
+import pandas as pd
+from IPython.display import Markdown
+from sklearn.preprocessing import OneHotEncoder
+import numpy as np
+```
 
 ## Introduction
 ### Understanding Mushroom Safety Through Machine Learning
@@ -63,11 +71,125 @@ execute:
 
 ---
 
-## Exploratory Data Analysis
+## Data Validation
+### Summary: 61069 observations and 20 features
+### Missing values in some features
+```{python}
+#| label: missing-values-summary
+#| echo: false
 
+total_number_of_observations = 61069
+missing_value_summary_df = pd.read_csv("../results/tables/missing_values_by_column.csv")
+missing_value_summary_df.rename(columns={'Column': 'Feature', 'Missing Count': '# Missing Value'}, inplace=True)
+# Calculate the missing percentage and sort by it in descending order
+missing_value_summary_df["Percentage"] = (
+    missing_value_summary_df["# Missing Value"] / total_number_of_observations * 100
+).round(2).astype(str) + '%'
+missing_value_summary_df = missing_value_summary_df.sort_values(by="Percentage", ascending=False)
+Markdown(missing_value_summary_df[:5].to_markdown(index = False))
+```
 
 ---
 
+## Exploratory Data Analysis
+:::: {.columns}
+::: {.column width="65%"}
+<br>
+
+- Target Distribution
+
+- Categorical Features Distribution
+
+- Numerical Features Distribution
+
+:::
+::: {.column width="35%"}
+![](img/eda_maginifier.png)
+:::
+::::
+
+---
+
+## Exploratory Data Analysis
+### Target Distribution
+
+:::: {.columns}
+::: {.column width="60%"}
+![](../results/figures/target_variable_distribution.png){width=120%}
+:::
+::: {.column width="40%"}
+<br>
+
+Finding: Balanced Class
+
+- p(poisonous) 55%  
+- e(edible) 45%  
+:::
+::::
+---
+
+## Exploratory Data Analysis
+### Categorical Features Distribution
+:::: {.columns}
+::: {.column width="40%"}
+
+**9** Categorical Variables:
+
+- Cap Shape
+- Cap Colors
+- Bruise or Bleed
+- Gill Colors
+- ...
+:::
+::: {.column width="60%"}
+_Example: Cap Color Distribution_
+```{python}
+#| label: tbl-cap-color
+#| echo: false
+
+# Mapping of abbreviations to full names
+cap_color_mapping = {
+    'n': 'brown',
+    'b': 'buff',
+    'g': 'gray',
+    'r': 'green',
+    'p': 'pink',
+    'u': 'purple',
+    'e': 'red',
+    'w': 'white',
+    'y': 'yellow',
+    'l': 'blue',
+    'o': 'orange',
+    'k': 'black'
+}
+
+cap_color_summary_df = pd.read_csv("../results/tables/cap-color_summary.csv")
+# Replace abbreviations with full names
+cap_color_summary_df['cap-color'] = cap_color_summary_df['cap-color'].replace(cap_color_mapping)
+cap_color_summary_df['Proportion'] = (cap_color_summary_df['Proportion'] * 100).round(2).astype(str) + '%'
+cap_color_summary_df.rename(columns={'cap-color': 'Cap Color'}, inplace=True)
+Markdown(cap_color_summary_df.to_markdown(index = False))
+```
+
+:::
+::::
+
+---
+
+## Exploratory Data Analysis
+### Numerical Features Distribution
+
+:::: {.columns}
+::: {.column width="33%"}
+![   Cap Diameter](../results/figures/cap-diameter_histogram.png){width=120%}
+:::
+::: {.column width="33%"}
+![   Stem Height](../results/figures/stem-height_histogram.png){width=120%}
+:::
+::: {.column width="33%"}
+![   Stem Width](../results/figures/stem-width_histogram.png){width=120%}
+:::
+::::
 ## Preprocessing the Data
 ### Categorical Features
 
@@ -89,9 +211,6 @@ compared to other classifiers
 
 ```{python load-data, echo=false}
 # hidden code to load in preprocessor and unprocessed dataset
-from sklearn.preprocessing import OneHotEncoder
-import pandas as pd
-import numpy as np
 mushroom_data = pd.read_csv("../data/processed/mushroom_train.csv")
 categorical_data = mushroom_data.select_dtypes(exclude=np.float64)
 ```
@@ -201,5 +320,6 @@ minimizing false negatives
 - "Edible and Poisonous Mushrooms Side by Side." Mushroom Exam, https://mushroomexam.com/mushroom_look_alikes.html. Accessed January 24, 2025.
 - "Mycology Icon" by Freepik, available at Flaticon. Accessed January 24, 2025.
 - "Mobile App Icon" by Freepik, available at Flaticon. Accessed January 24, 2025.
+- “EDA Magnifier,” generated using Applied Intelligence. Accessed January 25, 2025.
 
 ---
