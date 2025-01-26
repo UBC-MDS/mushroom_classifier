@@ -50,27 +50,6 @@ import numpy as np
 
 ---
 
-## Concluding Summary
-### Results and Limitations
-- **Results**
-  - SVC achieved 99.6% accuracy and 99.7% F₂ score.
-  - Only 22 false negatives out of 12,181 predictions.
-- **Limitations**
-  - Biological domain knowledge not integrated.
-  - Room to further reduce false negatives.
-
----
-
-## Concluding Summary
-### Future Directions
-  - Collaborate with mycologists to identify key biological interactions between mushroom features.
-  - Develop a mobile app to make mushroom safety assessments accessible to foragers and farmers.
-
-![](img/mycology.png){width=200px}
-![](img/mobile-app.png){width=200px}
-
----
-
 ## Data Validation
 ### Summary: 61069 observations and 20 features
 ### Missing values in some features
@@ -313,6 +292,27 @@ minimizing false negatives
 * Future Improvements:
   * Investigating misclassified cases 
   * Integrating domain knowledge
+
+---
+
+## Concluding Summary
+### Results and Limitations
+- **Results**
+  - SVC achieved 99.6% accuracy and 99.7% F₂ score.
+  - Only 22 false negatives out of 12,181 predictions.
+- **Limitations**
+  - Biological domain knowledge not integrated.
+  - Room to further reduce false negatives.
+
+---
+
+## Concluding Summary
+### Future Directions
+  - Collaborate with mycologists to identify key biological interactions between mushroom features.
+  - Develop a mobile app to make mushroom safety assessments accessible to foragers and farmers.
+
+![](img/mycology.png){width=200px}
+![](img/mobile-app.png){width=200px}
 
 ---
 
