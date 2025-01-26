@@ -28,7 +28,7 @@ import numpy as np
 ::: {.column width="60%"}
 - Mushrooms are nutritious but can be life-threatening.
 - Distinguishing edible from poisonous mushrooms is challenging.
-- Our solution: A machine learning model focused on safety, minimizing life-threatening false negatives.
+- A machine learning model focused on safety, minimizing life-threatening false negatives.
 :::
 
 
