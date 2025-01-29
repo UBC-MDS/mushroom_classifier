@@ -8,7 +8,7 @@
 <link href="slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="slides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="slides_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.5.56">
+  <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Benjamin Frizzell">
   <meta name="author" content="Essie Zhang">
@@ -390,7 +390,7 @@ Mason Zhang
 <h3 id="summary-61069-observations-and-20-features">Summary: 61069 observations and 20 features</h3>
 <h3 id="missing-values-in-some-features">Missing values in some features</h3>
 <div id="cell-missing-values-summary" class="cell" data-execution_count="2">
-<div id="missing-values-summary" class="cell-output cell-output-display cell-output-markdown" data-execution_count="8">
+<div id="missing-values-summary" class="cell-output cell-output-display cell-output-markdown" data-execution_count="14">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -477,7 +477,7 @@ Mason Zhang
 </div><div class="column" style="width:60%;">
 <p><em>Example: Cap Color Distribution</em></p>
 <div id="tbl-cap-color" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="9">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="15">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -584,11 +584,9 @@ Mason Zhang
 <h2>Preprocessing the Data</h2>
 <h3 id="categorical-features">Categorical Features</h3>
 <ul>
-<li>Many binary and multi-leveled categorical features in our dataset</li>
-<li>Binary features: <code>does-bruise-or-bleed</code> and <code>has-ring</code></li>
-<li>Categorical features: color, shape, and habitat</li>
-<li>We are not using Decision Trees, as they tend to show poor performance compared to other classifiers</li>
-<li>Therefore, we need to transform categories to numeric values</li>
+<li>Binary and multi-leveled categorical features in our dataset</li>
+<li>Many models cannot take non-numeric feature inputs</li>
+<li>Need a way to transform to numeric type</li>
 </ul>
 </section>
 <section id="preprocessing-the-data-1" class="slide level2">
@@ -602,8 +600,8 @@ Mason Zhang
 <section class="slide level2">
 
 <h3 id="raw-categorical-data">Raw Categorical Data</h3>
-<div id="d6d9c8e3" class="cell" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div id="85305e42" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="17">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -685,8 +683,8 @@ Mason Zhang
 <section class="slide level2">
 
 <p><code>OneHotEncoder(drop='if_binary', handle_unknown='ignore')</code></p>
-<div id="a8449ebb" class="cell" data-execution_count="6">
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div id="8b1bb873" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -814,8 +812,8 @@ Mason Zhang
 <h2>Preprocessing the Data</h2>
 <h3 id="numeric-features">Numeric Features</h3>
 <ul>
-<li>Numeric features show some skewness</li>
-<li>Models can be sensitive to extreme feature values</li>
+<li>Numeric features are skewed, and have outliers</li>
+<li>Models can be sensitive to extreme values</li>
 <li>Need an appropriate transformation to handle this</li>
 </ul>
 </section>
@@ -835,16 +833,8 @@ Mason Zhang
 
 <p><code>QuantileTransformer(output_distribution='normal')</code> <img data-src="img/quant_transform.png" alt="QuantileTransformer result"></p>
 </section>
-<section id="model-selection" class="slide level2">
-<h2>Model Selection</h2>
-<ul>
-<li>Logistic Regression: Fast and interpretable, good baseline, probability output to gauge uncertainty</li>
-<li>KNN: Simple, good performance, may struggle with dimensionality</li>
-<li>SVC: Very good performance, lacks interpretability, slow training time</li>
-</ul>
-</section>
-<section id="selecting-the-best-model" class="slide level2">
-<h2>Selecting the Best Model</h2>
+<section id="model-performance-metric" class="slide level2">
+<h2>Model Performance Metric</h2>
 <ul>
 <li>We could reasonably use accuracy as we have class balance, but we chose <span class="math inline">\(F_{\beta}\)</span> score: <span class="math display">\[
 F_{\beta} = (1 + \beta^2) \times \frac{\text{precision} \times \text{recall}}{\beta^2 \times \text{precision} + \text{recall}}
@@ -854,14 +844,23 @@ F_{\beta} = (1 + \beta^2) \times \frac{\text{precision} \times \text{recall}}{\b
 </section>
 <section id="results" class="slide level2">
 <h2>Results</h2>
+<h3 id="candidate-models">Candidate Models</h3>
+<ul>
+<li>Logistic Regression: Fast and easily interpretable, good baseline.</li>
+<li>K-Nearest Neighbours: Nonparametric, good performance, may struggle with dimensionality and large datasets</li>
+<li>Support Vector Classifier: Strong performance, lacks interpretability, long training time</li>
+</ul>
+</section>
+<section id="results-1" class="slide level2">
+<h2>Results</h2>
 <h3 id="model-performance-comparison">Model Performance Comparison</h3>
 
 <img data-src="img/model_result.png" class="r-stretch"><ul>
 <li>SVC performs the best: ideal choice</li>
-<li>Logistic Regression: suitable alternative for faster training</li>
+<li>K-Nearest Neighbours: suitable alternative for faster training</li>
 </ul>
 </section>
-<section id="results-1" class="slide level2">
+<section id="results-2" class="slide level2">
 <h2>Results</h2>
 <h3 id="svc-model-evaluation">SVC Model Evaluation</h3>
 <div class="columns">

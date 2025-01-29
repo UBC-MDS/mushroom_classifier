@@ -172,12 +172,9 @@ Markdown(cap_color_summary_df.to_markdown(index = False))
 ## Preprocessing the Data
 ### Categorical Features
 
-* Many binary and multi-leveled categorical features in our dataset
-* Binary features: `does-bruise-or-bleed` and `has-ring`
-* Categorical features: color, shape, and habitat
-* We are not using Decision Trees, as they tend to show poor performance
-compared to other classifiers
-* Therefore, we need to transform categories to numeric values
+* Binary and multi-leveled categorical features in our dataset
+* Many models cannot take non-numeric feature inputs
+* Need a way to transform to numeric type
 
 ---
 
@@ -186,6 +183,7 @@ compared to other classifiers
 
 * Simple way to handle both binary and multi-leveled categories
 * __dimensionality:__ creates many more columns, might be problematic
+
 ---
 
 ```{python load-data, echo=false}
@@ -216,8 +214,8 @@ ohe_df.head(3)
 ## Preprocessing the Data
 ### Numeric Features
 
-* Numeric features show some skewness
-* Models can be sensitive to extreme feature values
+* Numeric features are skewed, and have outliers
+* Models can be sensitive to extreme values
 * Need an appropriate transformation to handle this
 
 ---
@@ -238,15 +236,7 @@ more pronounced
 
 ---
 
-## Model Selection
-
-* Logistic Regression: Fast and interpretable, good baseline, probability output to gauge uncertainty
-* KNN: Simple, good performance, may struggle with dimensionality
-* SVC: Very good performance, lacks interpretability, slow training time
-
----
-
-## Selecting the Best Model
+## Model Performance Metric
 
 * We could reasonably use accuracy as we have class balance, but we chose $F_{\beta}$ score:
 $$
@@ -259,11 +249,20 @@ minimizing false negatives
 ---
 
 ## Results
+### Candidate Models
+
+* Logistic Regression: Fast and easily interpretable, good baseline.
+* K-Nearest Neighbours: Nonparametric, good performance, may struggle with dimensionality and large datasets
+* Support Vector Classifier: Strong performance, lacks interpretability, long training time
+
+---
+
+## Results
 ### Model Performance Comparison
 ![](img/model_result.png)
 
 * SVC performs the best: ideal choice
-* Logistic Regression: suitable alternative for faster training
+* K-Nearest Neighbours: suitable alternative for faster training
 
 ---
 
