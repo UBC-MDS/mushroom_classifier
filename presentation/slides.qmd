@@ -289,8 +289,9 @@ minimizing false negatives
 ## Limitation and Improvements
 * Limitation: Lack of feature engineering
 * Future Improvements:
-  * Investigating misclassified cases 
   * Integrating domain knowledge
+  * Investigating misclassified cases 
+  
 
 ---
 
@@ -298,7 +299,7 @@ minimizing false negatives
 ### Results and Limitations
 - **Results**
   - SVC achieved 99.6% accuracy and 99.7% F₂ score.
-  - Only 22 false negatives out of 12,181 predictions.
+  - Only 20 false negatives out of 12,181 predictions.
 - **Limitations**
   - Biological domain knowledge not integrated.
   - Room to further reduce false negatives.
