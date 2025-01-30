@@ -42,8 +42,7 @@ import numpy as np
 
 ## Introduction
 ### Project Goal and Dataset
-- **Goal**
-  - Build a model to classify mushroom edibility while minimizing false negatives.
+- **Goal**: Build a model to classify mushroom edibility while minimizing false negatives.
 - **Dataset**
   - Secondary Mushroom Dataset from the UCI Machine Learning Repository.
   - Generated, structured to provide a balanced and diverse representation of mushroom characteristics.
