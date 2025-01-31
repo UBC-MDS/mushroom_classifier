@@ -1,0 +1,335 @@
+---
+title: "Mushroom Classifier"
+format: revealjs
+author:
+  - name: Benjamin Frizzell
+  - name: Essie Zhang
+  - name: Hankun Xiao
+  - name: Mason Zhang
+jupyter: python3
+execute:
+  kernel: mushroom_classifier_env
+  interactive: true  
+---
+```{python}
+# import libraries here
+
+import pandas as pd
+from IPython.display import Markdown
+from sklearn.preprocessing import OneHotEncoder
+import numpy as np
+```
+
+## Introduction
+### Understanding Mushroom Safety Through Machine Learning
+
+:::: {.columns}
+
+::: {.column width="60%"}
+- Mushrooms are nutritious but can be life-threatening.
+- Distinguishing edible from poisonous mushrooms is challenging.
+- A machine learning model focused on safety, minimizing life-threatening false negatives.
+:::
+
+
+::: {.column width="40%"}
+![](img/destroying_angel_look-alikes.png)
+:::
+
+::::
+
+---
+
+## Introduction
+### Project Goal and Dataset
+- **Goal**: Build a model to classify mushroom edibility while minimizing false negatives.
+- **Dataset**
+  - Secondary Mushroom Dataset from the UCI Machine Learning Repository. Generated, structured to provide a balanced and diverse representation of mushroom characteristics.
+  - Over 60,000 mushroom samples categorized by cap shape, color, habitat, and bruising properties etc.
+
+---
+
+## Introduction
+### Approach
+  - **Models**
+    - Logistic Regression
+    - K-Nearest Neighbors (KNN)
+    - Support Vector Classifiers (SVC).
+  - **Priority**
+    - Safety (recall and F₂ score emphasized).
+
+---
+
+## Data Validation
+### Summary: 61069 observations and 20 features
+### Missing values in some features
+```{python}
+#| label: missing-values-summary
+#| echo: false
+
+total_number_of_observations = 61069
+missing_value_summary_df = pd.read_csv("../results/tables/missing_values_by_column.csv")
+missing_value_summary_df.rename(columns={'Column': 'Feature', 'Missing Count': '# Missing Value'}, inplace=True)
+# Calculate the missing percentage and sort by it in descending order
+missing_value_summary_df["Percentage"] = (
+    missing_value_summary_df["# Missing Value"] / total_number_of_observations * 100
+).round(2).astype(str) + '%'
+missing_value_summary_df = missing_value_summary_df.sort_values(by="Percentage", ascending=False)
+Markdown(missing_value_summary_df[:5].to_markdown(index = False))
+```
+
+---
+
+## Exploratory Data Analysis
+:::: {.columns}
+::: {.column width="65%"}
+<br>
+
+- Target Distribution
+
+- Categorical Features Distribution
+
+- Numerical Features Distribution
+
+:::
+::: {.column width="35%"}
+![](img/eda_maginifier.png)
+:::
+::::
+
+---
+
+## Exploratory Data Analysis
+### Target Distribution
+
+:::: {.columns}
+::: {.column width="60%"}
+![](../results/figures/target_variable_distribution.png){width=120%}
+:::
+::: {.column width="40%"}
+<br>
+
+Finding: Balanced Class
+
+- p(poisonous) 55%  
+- e(edible) 45%  
+:::
+::::
+---
+
+## Exploratory Data Analysis
+### Categorical Features Distribution
+:::: {.columns}
+::: {.column width="40%"}
+
+**9** Categorical Variables:
+
+- Cap Shape
+- Cap Colors
+- Bruise or Bleed
+- Gill Colors
+- ...
+:::
+::: {.column width="60%"}
+_Example: Cap Color Distribution_
+```{python}
+#| label: tbl-cap-color
+#| echo: false
+
+# Mapping of abbreviations to full names
+cap_color_mapping = {
+    'n': 'brown',
+    'b': 'buff',
+    'g': 'gray',
+    'r': 'green',
+    'p': 'pink',
+    'u': 'purple',
+    'e': 'red',
+    'w': 'white',
+    'y': 'yellow',
+    'l': 'blue',
+    'o': 'orange',
+    'k': 'black'
+}
+
+cap_color_summary_df = pd.read_csv("../results/tables/cap-color_summary.csv")
+# Replace abbreviations with full names
+cap_color_summary_df['cap-color'] = cap_color_summary_df['cap-color'].replace(cap_color_mapping)
+cap_color_summary_df['Proportion'] = (cap_color_summary_df['Proportion'] * 100).round(2).astype(str) + '%'
+cap_color_summary_df.rename(columns={'cap-color': 'Cap Color'}, inplace=True)
+Markdown(cap_color_summary_df.to_markdown(index = False))
+```
+
+:::
+::::
+
+---
+
+## Exploratory Data Analysis
+### Numerical Features Distribution
+
+:::: {.columns}
+::: {.column width="33%"}
+![   Cap Diameter](../results/figures/cap-diameter_histogram.png){width=120%}
+:::
+::: {.column width="33%"}
+![   Stem Height](../results/figures/stem-height_histogram.png){width=120%}
+:::
+::: {.column width="33%"}
+![   Stem Width](../results/figures/stem-width_histogram.png){width=120%}
+:::
+::::
+## Preprocessing the Data
+### Categorical Features
+
+* Binary and multi-leveled categorical features in our dataset
+* Many models cannot take non-numeric feature inputs
+* Need a way to transform to numeric type
+
+---
+
+## Preprocessing the Data
+### One-Hot Encoding
+
+* Simple way to handle both binary and multi-leveled categories
+* __dimensionality:__ creates many more columns, might be problematic
+
+---
+
+```{python load-data, echo=false}
+# hidden code to load in preprocessor and unprocessed dataset
+mushroom_data = pd.read_csv("../data/processed/mushroom_train.csv")
+categorical_data = mushroom_data.select_dtypes(exclude=np.float64)
+```
+### Raw Categorical Data
+
+```{python show-raw, echo=false, interactive=true}
+categorical_data.head(3)
+```
+---
+
+`OneHotEncoder(drop='if_binary', handle_unknown='ignore')`
+```{python show-raw, echo=true, interactive=true}
+# show effect of OHE on categorical data
+
+ohe = OneHotEncoder(drop='if_binary', handle_unknown='ignore',sparse_output=False)
+ohe_df = pd.DataFrame(ohe.fit_transform(categorical_data),dtype=int)
+
+ohe_df.columns = ohe.get_feature_names_out()
+ohe_df.head(3)
+```
+
+---
+
+## Preprocessing the Data
+### Numeric Features
+
+* Numeric features are skewed, and have outliers
+* Models can be sensitive to extreme values
+* Need an appropriate transformation to handle this
+
+---
+
+## Preprocessing the Data
+### Quantile Transformer
+1. Map features to empirical quantiles
+2. Map quantiles to chosen distribution (eg. Normal or Uniform)
+
+* Outliers become less influential, small differences become 
+more pronounced
+* Nonlinear transformation, so we lose some interpretability
+
+---
+
+`QuantileTransformer(output_distribution='normal')`
+![QuantileTransformer result](img/quant_transform.png)
+
+---
+
+## Model Performance Metric
+
+* We could reasonably use accuracy as we have class balance, but we chose $F_{\beta}$ score:
+$$
+F_{\beta} = (1 + \beta^2) \times \frac{\text{precision} \times \text{recall}}{\beta^2 \times \text{precision} + \text{recall}}
+$$
+$\beta = 2$ weighs recall higher than precision, and focuses on 
+minimizing false negatives
+* Important for classifying mushrooms: we want to **limit consumption of poisonous mushrooms**!
+
+---
+
+## Results
+### Candidate Models
+
+* Logistic Regression: Fast and easily interpretable, good baseline.
+* K-Nearest Neighbours: Nonparametric, good performance, may struggle with dimensionality and large datasets
+* Support Vector Classifier: Strong performance, lacks interpretability, long training time
+
+---
+
+## Results
+### Model Performance Comparison
+![](img/model_result.png)
+
+* SVC performs the best: ideal choice
+* K-Nearest Neighbours: suitable alternative for faster training
+
+---
+
+## Results
+### SVC Model Evaluation
+
+:::: {.columns}
+
+::: {.column width="60%"}
+![](img/cm.png)
+
+:::
+
+
+::: {.column width="40%"}
+* 45 mistakes out of 12,181 test samples
+* 20 false negatives are the most critical
+:::
+
+::::
+
+---
+
+## Limitation and Improvements
+* Limitation: Lack of feature engineering
+* Future Improvements:
+  * Integrating domain knowledge
+  * Investigating misclassified cases 
+  
+
+---
+
+## Concluding Summary
+### Analysis Overview
+- **Processes**
+  - Data Sourcing
+  - EDA
+  - Preprocessing
+  - Modeling
+  - Evaluation & Selection
+
+---
+
+## Concluding Summary
+### Practical Applications
+  - Collaborate with mycologists to identify key biological interactions between mushroom features.
+  - Develop a mobile app to make mushroom safety assessments accessible to foragers and farmers.
+
+![](img/mycology.png){width=200px}
+![](img/mobile-app.png){width=200px}
+
+---
+
+## References
+- "Edible and Poisonous Mushrooms Side by Side." Mushroom Exam, https://mushroomexam.com/mushroom_look_alikes.html. Accessed January 24, 2025.
+- "Mycology Icon" by Freepik, available at Flaticon. Accessed January 24, 2025.
+- "Mobile App Icon" by Freepik, available at Flaticon. Accessed January 24, 2025.
+- “EDA Magnifier,” generated using Applied Intelligence. Accessed January 25, 2025.
+
+---
